@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/01 18:44:33 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/01 20:25:35 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@ int	main(void)
 		1, 1, 1, 0, 0, 1, 0, 1,
 		1, 0, 0, 0, 0, 1, 1, 1,
 		1, 0, 0, 0, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 0, 0, 1,
 		1, 1, 1, 1, 1, 1, 1, 1,};
 
-	map.mapx = 7;
-	map.mapy = 7;
+	map.mapx = 8;
+	map.mapy = 8;
 	map.px = 500;
 	map.py = 500;
-	map.pa = 1;
+	map.pa = PI;
 	window(&map);
 	map.mapp = mapp;
 	map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -69,14 +68,14 @@ void	raycaster(t_map *map)
 			yo = -64;
 			xo = -yo * atan;
 		}
-		else if (ra < PI && ra > 0)
+		if (ra < PI)
 		{
-			ry = (((int)map->py >> 6) << 6) + 64;
+			ry = (((int)(map->py) >> 6) << 6) + 64;
 			rx = (map->py - ry) * atan + map->px;
 			yo = 64;
 			xo = -yo * atan;
 		}
-		else if (ra == 0 || ra == PI)
+		if (ra == 0 || ra == PI)
 		{
 			rx = map->px;
 			ry = map->py;
@@ -87,8 +86,8 @@ void	raycaster(t_map *map)
 			mx = (int)(rx) >> 6;
 			my = (int)(ry) >> 6;
 			mp = my * map->mapx + mx;
-			if (mp >= 0 && mp < map->mapx * map->mapy && map->mapp[mp] == 1)
-				break ;
+			if (mp >= 0 && mp < (map->mapx * map->mapy) && map->mapp[mp] == 1)
+				dof = 8;
 			else
 			{
 				rx += xo;
@@ -107,7 +106,7 @@ void	draw_map(t_map *map)
 	int	x;
 
 	y = -1;
-	while (++y <= 8)
+	while (++y < 8)
 	{
 		x = -1;
 		while (++x < 8)
@@ -163,7 +162,7 @@ void	keyhook(mlx_key_data_t keydata, void *ma)
 	raycaster(map);
 }
 
-void	draw_line(t_map	*map, int beginx, int beginy, int endx, int endy)
+void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy)
 {
 	int		pixels;
 	double	deltax;
@@ -174,9 +173,9 @@ void	draw_line(t_map	*map, int beginx, int beginy, int endx, int endy)
 	pixels = sqrt((deltax * deltax) + deltay * deltay);
 	deltax /= pixels;
 	deltay /= pixels;
-	while (pixels && beginx < SCREEN_WIDTH && beginy < SCREEN_HEIGHT)
+	while (pixels && beginx > 0 && beginy > 0 && beginx < SCREEN_WIDTH && beginy < SCREEN_HEIGHT)
 	{
-		mlx_put_pixel(map->bg, beginx, beginy, 0xffefff);
+		mlx_put_pixel(map->bg, beginx, beginy, 0x1111ff);
 		beginx += deltax;
 		beginy += deltay;
 		--pixels;

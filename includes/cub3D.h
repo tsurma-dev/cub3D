@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/01 17:52:15 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/01 19:56:15 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ void	fill_wall(t_map *map);
 void	keyhook(mlx_key_data_t keydata, void *ma);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
-void	draw_line(t_map	*map, int beginx, int beginy, int endx, int endy);
-
+void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy);
 #endif
