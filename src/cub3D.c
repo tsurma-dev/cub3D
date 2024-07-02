@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/01 20:25:35 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/02 07:19:16 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	main(void)
 	window(&map);
 	map.mapp = mapp;
 	map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	map.test = mlx_new_image(map.mlx, 10, 10);
-	map.no_i = mlx_new_image(map.mlx, 100, 100);
+	map.test = mlx_new_image(map.mlx, 2, 2);
+	map.no_i = mlx_new_image(map.mlx, 64, 64);
 	fill_background(&map);
 	fill_test(&map);
 	fill_wall(&map);
@@ -58,7 +58,7 @@ void	raycaster(t_map *map)
 	while (r < 1)
 	{
 		if (ra == 0)
-			atan = 0;
+			atan = -1;
 		else
 			atan = -1 / tan(ra);
 		if (ra > PI)
@@ -114,7 +114,7 @@ void	draw_map(t_map *map)
 
 			if (map->mapp[y * 8 + x] == 1)
 			{
-				mlx_image_to_window(map->mlx, map->no_i, x * 100, y * 100);
+				mlx_image_to_window(map->mlx, map->no_i, x * 64, y * 64);
 			}
 		}
 	}
@@ -134,8 +134,8 @@ void	keyhook(mlx_key_data_t keydata, void *ma)
 	}
 	else if (mlx_is_key_down(map->mlx, MLX_KEY_S))
 	{
-		map->px += map->pdx * MOVE_SPEED;
-		map->py += map->pdy * MOVE_SPEED;
+		map->px -= map->pdx * MOVE_SPEED;
+		map->py -= map->pdy * MOVE_SPEED;
 	}
 	if (mlx_is_key_down(map->mlx, MLX_KEY_A))
 	{
@@ -168,6 +168,7 @@ void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy)
 	double	deltax;
 	double	deltay;
 
+	fill_background(map);
 	deltax = endx - beginx;
 	deltay = endy - beginy;
 	pixels = sqrt((deltax * deltax) + deltay * deltay);
@@ -229,16 +230,15 @@ void	fill_wall(t_map *map)
 	int	x;
 
 	y = -1;
-	while (++y < 99)
+	while (++y < 63)
 	{
 		x = -1;
-		while (++x < 99)
+		while (++x < 63)
 		{
 			mlx_put_pixel(map->no_i, x, y, 0xffffff);
 		}
 	}
 }
-
 
 void	fill_test(t_map *map)
 {
@@ -246,38 +246,12 @@ void	fill_test(t_map *map)
 	int	x;
 
 	y = -1;
-	while (++y < 10)
+	while (++y < 2)
 	{
 		x = -1;
-		while (++x < 10)
+		while (++x < 2)
 		{
 			mlx_put_pixel(map->test, x, y, 0x0000ff);
 		}
 	}
 }
-
-// char	**ft_pointjoin(char **dest, char *src)
-// {
-// 	char	**ret;
-// 	int		i;
-// 	int		j;
-
-// 	if (!src)
-// 		exit (0);
-// 	i = 0;
-// 	j = -1;
-// 	if (dest != NULL)
-// 	{
-// 		while (dest[i] != NULL)
-// 			++i;
-// 	}
-// 	ret = ft_calloc(sizeof(char *), i + 2);
-// 	if (!ret)
-// 		return (NULL);
-// 	ret[i] = src;
-// 	if (dest != NULL)
-// 		while (--i >= 0)
-// 			ret[i] = dest[i];
-// 	free(dest);
-// 	return (ret);
-// }
