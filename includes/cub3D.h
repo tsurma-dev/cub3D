@@ -21,7 +21,7 @@
 # include <math.h>
 # include <string.h>
 # include "../libft/libft.h"
-# include "../../MLX42/include/MLX42/MLX42.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 
 # define PI 3.1415
 # define SCREEN_WIDTH 1920
