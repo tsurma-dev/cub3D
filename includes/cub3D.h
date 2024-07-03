@@ -20,14 +20,24 @@
 # include <fcntl.h>
 # include <math.h>
 # include <string.h>
+#include <float.h>
 # include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
 # define PI 3.1415
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
-# define TURN_SPEED 0.1
+# define TURN_SPEED 0.05
 # define MOVE_SPEED 2
+# define MOVE_SPEED_FORWARD 5.0
+# define MOVE_SPEED_BACKWARD 2.5
+# define TEXTURE_SIZE 64
+# define MLX_KEY_W 87
+# define MLX_KEY_S 83
+# define MLX_KEY_A 65
+# define MLX_KEY_D 68
+# define MLX_KEY_ESCAPE 256
+
 
 typedef enum parserr
 {
@@ -51,11 +61,9 @@ typedef struct cub3D_map
 	mlx_image_t	*ea_i;
 	mlx_image_t	*bg;
 	mlx_image_t	*test;
-	float		px;
-	float		py;
-	float		pdx;
-	float		pdy;
-	float		pa;
+	double px, py, pa;
+    double pdx, pdy;
+	double plane_x, plane_y;
 	int			mapx;
 	int			mapy;
 	int			*mapp;
@@ -63,13 +71,14 @@ typedef struct cub3D_map
 	int			colour_f;
 }	t_map;
 
+
 int		parser(char *path, t_map *map);
 int		rgb_extractor(char *line);
 void	window(t_map *map);
 void	fill_background(t_map *map);
 void	fill_test(t_map *map);
 void	fill_wall(t_map *map);
-void	keyhook(mlx_key_data_t keydata, void *ma);
+void keyhook(void *param);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy);
