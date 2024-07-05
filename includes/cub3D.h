@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/01 19:56:15 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/05 17:49:37 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,29 @@ typedef enum parserr
 	UNEX_CHAR
 }	t_parserr;
 
+typedef enum mapenum
+{
+	FLOOR,
+	WALL,
+	N,
+	S,
+	E,
+	W,
+	NOTHING
+}	t_mapenum;
+
 typedef enum BOOL
 {
 	FALSE,
 	TRUE
 }	t_BOOL;
+
+typedef struct cub3D_file
+{
+	char	**file;
+
+}	t_file;
+
 
 typedef struct cub3D_map
 {
@@ -59,7 +77,12 @@ typedef struct cub3D_map
 	mlx_image_t	*so_i;
 	mlx_image_t	*we_i;
 	mlx_image_t	*ea_i;
+	mlx_texture_t *no_t;
+	mlx_texture_t *so_t;
+	mlx_texture_t *we_t;
+	mlx_texture_t *ea_t;
 	mlx_image_t	*bg;
+	mlx_image_t	*p_layer;
 	mlx_image_t	*test;
 	double px, py, pa;
     double pdx, pdy;
@@ -69,6 +92,7 @@ typedef struct cub3D_map
 	int			*mapp;
 	int			colour_c;
 	int			colour_f;
+
 }	t_map;
 
 
@@ -82,4 +106,13 @@ void keyhook(void *param);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy);
+
+
+char	**ft_pointjoin(char **dest, char *src);
+int	parse_line(t_map *map, char *line);
+int	parse_map(t_map *map, char **lines);
+mlx_texture_t	*path_extractor(char *line);
+int	get_map_dimensions(t_map *map, char **lines);
+
+
 #endif

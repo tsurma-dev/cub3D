@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsurma <tsurma@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/02 07:19:16 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/05 18:07:13 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,26 @@ int main(void)
     window(&map);
     map.mapp = mapp;
     map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-    map.test = mlx_new_image(map.mlx, 2, 2);
-    map.no_i = mlx_new_image(map.mlx, 64, 64);
+    map.p_layer = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+    // map.test = mlx_new_image(map.mlx, 2, 2);
+    // map.no_i = mlx_new_image(map.mlx, 64, 64);
 
     fill_background(&map);
-    fill_test(&map);
-    fill_wall(&map);
+    // fill_test(&map);
+    // fill_wall(&map);
 
     mlx_image_to_window(map.mlx, map.bg, 0, 0);
-    draw_map(&map);
-    mlx_image_to_window(map.mlx, map.test, map.px, map.py);
+    mlx_image_to_window(map.mlx, map.p_layer, 0, 0);
+
+    // draw_map(&map);
+    // mlx_image_to_window(map.mlx, map.test, map.px, map.py);
 
     mlx_loop_hook(map.mlx, &keyhook, &map);
     mlx_loop(map.mlx);
 
     mlx_delete_image(map.mlx, map.bg);
-    mlx_delete_image(map.mlx, map.test);
-    mlx_delete_image(map.mlx, map.no_i);
+    // mlx_delete_image(map.mlx, map.test);
+    // mlx_delete_image(map.mlx, map.no_i);
     mlx_terminate(map.mlx);
 
     return (EXIT_SUCCESS);
@@ -161,7 +164,7 @@ void raycaster(t_map *map)
         y = draw_start;
         while (y < draw_end)
         {
-            mlx_put_pixel(map->bg, x, y, color);
+            mlx_put_pixel(map->p_layer, x, y, color);
             y++;
         }
         x++;
@@ -238,10 +241,11 @@ void keyhook(void *param)
 
     if (moved)
     {
-        fill_background(map);
+        // fill_background(map);
+        ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width) * 4);
         raycaster(map);
-        mlx_image_to_window(map->mlx, map->bg, 0, 0);
-        mlx_image_to_window(map->mlx, map->test, map->px, map->py);
+        // mlx_image_to_window(map->mlx, map->p_layer, 0, 0);
+        // mlx_image_to_window(map->mlx, map->test, map->px, map->py);
     }
 
     if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
@@ -331,7 +335,7 @@ void draw_line(t_map *map, float beginx, float beginy, float endx, float endy)
     deltay /= pixels;
     while (pixels && beginx > 0 && beginy > 0 && beginx < SCREEN_WIDTH && beginy < SCREEN_HEIGHT)
     {
-        mlx_put_pixel(map->bg, beginx, beginy, 0x1111ff);
+        mlx_put_pixel(map->p_layer, beginx, beginy, 0x1111ff);
         beginx += deltax;
         beginy += deltay;
         --pixels;

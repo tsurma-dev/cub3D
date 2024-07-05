@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:46:44 by tsurma            #+#    #+#              #
-#    Updated: 2024/06/28 15:20:56 by tsurma           ###   ########.fr        #
+#    Updated: 2024/07/05 17:10:06 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ ft_isalpha.c\
 ft_isascii.c\
 ft_isdigit.c\
 ft_isprint.c\
+ft_isspace.c\
 ft_itoa.c\
 ft_memchr.c\
 ft_memcmp.c\
