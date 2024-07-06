@@ -12,35 +12,59 @@
 
 #include "../includes/cub3D.h"
 
-int	parser(char *path, t_map *map)
+int parser(char *path, t_map *map)
 {
-	char	**file;
-	char	*line;
-	int		fd;
-	int		i;
+    char    **file = NULL;
+    char    *line;
+    int     fd;
+    int     i;
 
-	//check_ext(path);
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		return (ENONET);
-	line = get_next_line(fd);
+    check_ext(path);
+    fd = open(path, O_RDONLY);
+    if (fd == -1)
+        return (ENONET);
+    line = get_next_line(fd);
     while (line != NULL)
     {
+        printf("Read line: %s\n", line);
         file = ft_pointjoin(file, line);
         if (!file)
         {
+            printf("Error: Could not join lines\n");
             close(fd);
+            return (ENOMEM);
         }
         line = get_next_line(fd);
-	}
+    }
     close(fd);
-	i = -1;
-	while (file[++i] && parse_line(map, file[i]) != 3)
-		;
-	if (!file[i])
+    i = -1;
+    while (file[++i] && parse_line(map, file[i]) != 3)
+    {
+        printf("Parsing line %d: %s\n", i, file[i]);
+    }
+    if (!file[i])
 		return (ENONET);
-	parse_map(map, &file[i]);
-	return (0);
+    printf("Map data found, parsing map\n");
+    if (parse_map(map, &file[i]) != 0)
+    {
+        printf("Error parsing map\n");
+        exit(EXIT_FAILURE);;
+    }
+    printf("Parsed map successfully.\n");
+    int player_x = -1, player_y = -1;
+    if (!find_player_position(map, &player_x, &player_y))
+    {
+    	printf("Error: No player start position found\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("Player position found at (%d, %d).\n", player_x, player_y);
+    if (!check_valid_map(map, player_x, player_y))
+    {
+        printf("Error: Map validation failed\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("Map validation successful.\n");
+    return (0);
 }
 
 int	parse_line(t_map *map, char *line)
@@ -67,7 +91,6 @@ int	parse_line(t_map *map, char *line)
 	return (0);
 
 }
-
 
 mlx_texture_t	*path_extractor(char *line)
 {
@@ -142,7 +165,7 @@ int	rgb_extractor(char *line)
 	return (rgb);
 }
 /*
-int valid_chars(char c)
+int valid_char(char c)
 {
     return (c == ' ' || c == '0' || c == '1' || c == 'N' ||
             c == 'S' || c == 'E' || c == 'W');
@@ -168,65 +191,114 @@ int char_to_int(char c)
 }
 */
 
-int	parse_map(t_map *map, char **lines)
+int parse_map(t_map *map, char **lines)
 {
-	int	i;
-	int	j;
-	int	*mapi;
-	int	mapj;
+    int i;
+    int j;
+    int mapj;
+    char *line;
+    char *end;
+    char c;
 
-	if (get_map_dimensions(map, lines) == -1)
-		return (-1);
-	mapi = malloc(sizeof(int) * (map->mapx * map->mapy));
-	if (!mapi)
-		return (ENOMEM);
-	i = -1;
-	mapj = -1;
-	while (lines[++i])
-	{
-		j = -1;
-		while (lines[i][++j] && lines[i][j] != '\n')
-		{
-			if (lines[i][j] == '1')
-				mapi[++mapj] = WALL;
-			else if (lines[i][j] == '0')
-				mapi[++mapj] = FLOOR;
-			else if (lines[i][j] == 'N')
-				mapi[++mapj] = N;
-			else if (lines[i][j] == 'E')
-				mapi[++mapj] = E;
-			else if (lines[i][j] == 'W')
-				mapi[++mapj] = W;
-			else if (lines[i][j] == 'S')
-				mapi[++mapj] = S;
-			else if (lines[i][j] == ' ')
-				mapi[++mapj] = NOTHING;
-			else
-				return (1);
-		}
-		while (j < map->mapx - 1)
-			mapi[++mapj] = NOTHING;
-	}
-	return (0);
+    if (get_map_dimensions(map, lines) == -1)
+    {
+        printf("Error: Could not get map dimensions\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("Map dimensions: %d x %d\n", map->mapx, map->mapy);
+    map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
+    if (!map->mapp)
+        return (ENOMEM);
+    i = -1;
+    mapj = 0;
+    while (lines[++i])
+    {
+        line = lines[i];
+        while (ft_isspace((unsigned char) *line))
+            line++;
+        end = line + ft_strlen(line) - 1;
+        while (end > line && ft_isspace((unsigned char) *end))
+            end--;
+        end[1] = '\0';
+
+        j = -1;
+        while (line[++j])
+        {
+            c = line[j];
+            printf("Parsing character '%c' at line %d, position %d\n", c, i, j);
+			if (mapj >= map->mapx * map->mapy)
+            {
+                printf("Error: Index out of bounds at mapj=%d\n", mapj);
+                return (1);
+            }
+			if (c == '1')
+                map->mapp[mapj++] = WALL;
+            else if (c == '0')
+                map->mapp[mapj++] = FLOOR;
+            else if (c == 'N')
+                map->mapp[mapj++] = N;
+            else if (c == 'E')
+                map->mapp[mapj++] = E;
+            else if (c == 'W')
+                map->mapp[mapj++] = W;
+            else if (c == 'S')
+                map->mapp[mapj++] = S;
+            else if (c == ' ')
+                map->mapp[mapj++] = NOTHING;
+            else
+            {
+                printf("Error: Unexpected character '%c' in map\n", c);
+                return (1);
+            }
+        }
+         while (j < map->mapx)
+        {
+            if (mapj >= map->mapx * map->mapy)
+            {
+                printf("Error: Index out of bounds at mapj=%d\n", mapj);
+                return (1);
+            }
+            map->mapp[mapj++] = NOTHING;
+            j++;
+        }
+    }
+    printf("Map parsed and loaded into memory.\n");
+    return (0);
 }
 
 int	get_map_dimensions(t_map *map, char **lines)
 {
-	int	x;
-	int	y;
+	int x;
+	int y;
+    char *line;
+    char *end;
 
-	y = -1;
-	while (lines[++y] && lines[y][0] == '1' && lines[y][0] == ' ')
-	{
-		x = ft_strlen(lines[y]);
-		if (x > map->mapx)
-			map->mapx = x;
-	}
-	map->mapy = y;
-	if (lines[y] != NULL)
-		return (-1);
-	return (0);
+	map->mapx = 0;
+    map->mapy = 0;
+
+    y = 0;
+    while (lines[y])
+    {
+        line = lines[y];
+        while (ft_isspace((unsigned char)*line))
+            line++;
+        end = line + ft_strlen(line) - 1;
+        while (end > line && ft_isspace((unsigned char)*end))
+            end--;
+        end[1] = '\0';
+
+        if (line[0] == '1' || line[0] == ' ')
+        {
+            x = ft_strlen(line);
+            if (x > map->mapx)
+                map->mapx = x;
+            map->mapy++;
+        }
+        y++;
+    }
+    return (map->mapx > 0 && map->mapy > 0) ? 0 : -1;
 }
+
 
 char	**ft_pointjoin(char **dest, char *src)
 {
@@ -234,7 +306,7 @@ char	**ft_pointjoin(char **dest, char *src)
 	int		i;
 
 	if (!src)
-		exit (0);
+		return (NULL);
 	i = 0;
 	if (dest != NULL)
 	{
@@ -245,9 +317,11 @@ char	**ft_pointjoin(char **dest, char *src)
 	if (!ret)
 		return (NULL);
 	ret[i] = src;
-	if (dest != NULL)
-		while (--i >= 0)
-			ret[i] = dest[i];
-	free(dest);
-	return (ret);
+	while (i > 0)
+    {
+        i--;
+        ret[i] = dest[i];
+    }
+    free(dest);
+    return ret;
 }

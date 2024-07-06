@@ -38,6 +38,13 @@
 # define MLX_KEY_D 68
 # define MLX_KEY_ESCAPE 256
 
+# define N 78
+# define S 83
+# define E 69
+# define W 87
+# define FLOOR 0
+# define WALL 1
+# define NOTHING -1
 
 typedef enum parserr
 {
@@ -45,17 +52,6 @@ typedef enum parserr
 	RGB_OOR,
 	UNEX_CHAR
 }	t_parserr;
-
-typedef enum mapenum
-{
-	FLOOR,
-	WALL,
-	N,
-	S,
-	E,
-	W,
-	NOTHING
-}	t_mapenum;
 
 typedef enum BOOL
 {
@@ -92,7 +88,6 @@ typedef struct cub3D_map
 	int			*mapp;
 	int			colour_c;
 	int			colour_f;
-
 }	t_map;
 
 
@@ -114,6 +109,14 @@ int	parse_map(t_map *map, char **lines);
 mlx_texture_t	*path_extractor(char *line);
 int	get_map_dimensions(t_map *map, char **lines);
 void check_ext(const char *filename);
+
+void initiate_cub3Dmap(t_map *map);
+int find_player_position(t_map *map, int *player_x, int *player_y);
+int check_valid_map(t_map *map, int player_x, int player_y);
+
+
+
+
 
 
 #endif

@@ -12,11 +12,11 @@
 
 #include "../includes/cub3D.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
     t_map map;
 
-    int mapp[] = {
+    /*int mapp[] = {
         1, 1, 1, 1, 1, 1, 1, 1,
         1, 0, 0, 0, 0, 0, 0, 1,
         1, 0, 0, 0, 0, 0, 0, 1,
@@ -28,19 +28,19 @@ int main(void)
 
     map.mapx = 8;
     map.mapy = 8;
-    /*
+    */
+
     if (argc != 2)
     {
         printf("Usage: %s <map_file.cub>\n", argv[0]);
         return (EXIT_FAILURE);
     }
-
+    initiate_cub3Dmap(&map);
     if (parser(argv[1], &map) != 0)
     {
         printf("Error: Failed to parse map file.\n");
         return (EXIT_FAILURE);
     }
-    */
     map.px = 150;
     map.py = 150;
     map.pa = 0;
@@ -50,7 +50,7 @@ int main(void)
     map.plane_y = -0.66 * map.pdx;
 
     window(&map);
-    map.mapp = mapp;
+    //map.mapp = mapp;
     map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
     map.p_layer = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
     // map.test = mlx_new_image(map.mlx, 2, 2);
