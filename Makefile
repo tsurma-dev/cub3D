@@ -18,7 +18,7 @@ MLXFLAGS = -Iinclude -I$(LIBMLX)/include -ldl -lglfw -pthread -lm
 MAKEFLAGS = --no-print-directory
 
 SRC = src/cub3D.c \
-      src/parser.c
+      src/parser.c src/parsing_utils.c
 
 OBJ = $(SRC:.c=.o)
 

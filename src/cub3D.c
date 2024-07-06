@@ -12,10 +12,9 @@
 
 #include "../includes/cub3D.h"
 
-
 int main(void)
 {
-    t_map    map;
+    t_map map;
 
     int mapp[] = {
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -29,6 +28,19 @@ int main(void)
 
     map.mapx = 8;
     map.mapy = 8;
+    /*
+    if (argc != 2)
+    {
+        printf("Usage: %s <map_file.cub>\n", argv[0]);
+        return (EXIT_FAILURE);
+    }
+
+    if (parser(argv[1], &map) != 0)
+    {
+        printf("Error: Failed to parse map file.\n");
+        return (EXIT_FAILURE);
+    }
+    */
     map.px = 150;
     map.py = 150;
     map.pa = 0;

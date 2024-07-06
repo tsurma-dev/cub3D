@@ -113,6 +113,7 @@ int	parse_line(t_map *map, char *line);
 int	parse_map(t_map *map, char **lines);
 mlx_texture_t	*path_extractor(char *line);
 int	get_map_dimensions(t_map *map, char **lines);
+void check_ext(const char *filename);
 
 
 #endif

@@ -19,19 +19,21 @@ int	parser(char *path, t_map *map)
 	int		fd;
 	int		i;
 
+	//check_ext(path);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (ENONET);
-	line = NULL;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		file = ft_pointjoin(file, line);
-		if (!file)
-			return (ENOMEM);
+	line = get_next_line(fd);
+    while (line != NULL)
+    {
+        file = ft_pointjoin(file, line);
+        if (!file)
+        {
+            close(fd);
+        }
+        line = get_next_line(fd);
 	}
+    close(fd);
 	i = -1;
 	while (file[++i] && parse_line(map, file[i]) != 3)
 		;
@@ -139,6 +141,32 @@ int	rgb_extractor(char *line)
 	}
 	return (rgb);
 }
+/*
+int valid_chars(char c)
+{
+    return (c == ' ' || c == '0' || c == '1' || c == 'N' ||
+            c == 'S' || c == 'E' || c == 'W');
+}
+
+int char_to_int(char c)
+{
+    if (c == '1')
+		return WALL;
+    if (c == '0')
+		return FLOOR;
+    if (c == 'N')
+		return N;
+    if (c == 'S')
+		return S;
+    if (c == 'E')
+		return E;
+    if (c == 'W')
+		return W;
+    if (c == ' ')
+		return NOTHING;
+    return -1;
+}
+*/
 
 int	parse_map(t_map *map, char **lines)
 {
@@ -204,12 +232,10 @@ char	**ft_pointjoin(char **dest, char *src)
 {
 	char	**ret;
 	int		i;
-	int		j;
 
 	if (!src)
 		exit (0);
 	i = 0;
-	j = -1;
 	if (dest != NULL)
 	{
 		while (dest[i] != NULL)
