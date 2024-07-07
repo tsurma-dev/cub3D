@@ -32,6 +32,12 @@ void check_ext(const char *filename)
         exit(EXIT_FAILURE);
     }
 }
+
+void initiate_cub3Dfile(t_file *file)
+{
+    file->file = NULL;
+}
+
 void initiate_cub3Dmap(t_map *map)
 {
     map->mlx = NULL;
@@ -62,7 +68,7 @@ void initiate_cub3Dmap(t_map *map)
 int find_player_position(t_map *map, int *player_x, int *player_y)
 {
     int y;
-    int x;
+	int x;
 
     y = 0;
     while (y < map->mapy)
@@ -75,6 +81,18 @@ int find_player_position(t_map *map, int *player_x, int *player_y)
             {
                 *player_x = x;
                 *player_y = y;
+
+                if (map->mapp[y * map->mapx + x] == N)
+                    map->pa = 3 * PI / 2;
+                else if (map->mapp[y * map->mapx + x] == S)
+                    map->pa = PI / 2;
+                else if (map->mapp[y * map->mapx + x] == E)
+                    map->pa = 0;
+                else if (map->mapp[y * map->mapx + x] == W)
+                    map->pa = PI;
+
+                map->px = x * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+                map->py = y * TEXTURE_SIZE + TEXTURE_SIZE / 2;
                 return 1;
             }
             x++;
@@ -109,11 +127,21 @@ int valid_map(int *map, int width, int height)
         while (x < width)
         {
             int tile = map[y * width + x];
-            if (tile == N || tile == S || tile == E || tile == W)
+            if (tile == FLOOR || tile == WALL || tile == NOTHING)
+            {
+                x++;
+                continue;
+            }
+            else if (tile == N || tile == S || tile == E || tile == W)
+            {
                 player_count++;
-            else if (tile != FLOOR && tile != WALL && tile != NOTHING)
+                x++;
+                continue;
+            }
+            else
+            {
                 return 0;
-            x++;
+            }
         }
         y++;
     }
@@ -171,7 +199,7 @@ int check_valid_map(t_map *map, int player_x, int player_y)
 {
     if (!valid_map(map->mapp, map->mapx, map->mapy))
     {
-        printf("Error: Map contains invalid characters or multiple/no player start positions\n");
+        printf("Error: Map contains invalid chars or multiple/no player start positions\n");
         return 0;
     }
     if (!content_check(map, player_x, player_y))
@@ -181,4 +209,3 @@ int check_valid_map(t_map *map, int player_x, int player_y)
     }
     return (1);
 }
-

@@ -109,8 +109,12 @@ int	parse_map(t_map *map, char **lines);
 mlx_texture_t	*path_extractor(char *line);
 int	get_map_dimensions(t_map *map, char **lines);
 void check_ext(const char *filename);
+void update_player_direction(t_map *map);
+
 
 void initiate_cub3Dmap(t_map *map);
+void initiate_cub3Dfile(t_file *file);
+
 int find_player_position(t_map *map, int *player_x, int *player_y);
 int check_valid_map(t_map *map, int player_x, int player_y);
 

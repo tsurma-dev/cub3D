@@ -43,18 +43,18 @@ int parser(char *path, t_map *map)
         printf("Parsing line %d: %s\n", i, file[i]);
     }
     if (!file[i])
-		return (ENONET);
+        return (ENONET);
     printf("Map data found, parsing map\n");
     if (parse_map(map, &file[i]) != 0)
     {
         printf("Error parsing map\n");
-        exit(EXIT_FAILURE);;
+        exit(EXIT_FAILURE);
     }
     printf("Parsed map successfully.\n");
     int player_x = -1, player_y = -1;
     if (!find_player_position(map, &player_x, &player_y))
     {
-    	printf("Error: No player start position found\n");
+        printf("Error: No player start position found\n");
         exit(EXIT_FAILURE);
     }
     printf("Player position found at (%d, %d).\n", player_x, player_y);
@@ -66,6 +66,7 @@ int parser(char *path, t_map *map)
     printf("Map validation successful.\n");
     return (0);
 }
+
 
 int	parse_line(t_map *map, char *line)
 {
@@ -202,8 +203,8 @@ int parse_map(t_map *map, char **lines)
 
     if (get_map_dimensions(map, lines) == -1)
     {
-        printf("Error: Could not get map dimensions\n");
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "Error: Could not get map dimensions\n");
+        return (-1);
     }
     printf("Map dimensions: %d x %d\n", map->mapx, map->mapy);
     map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
@@ -226,12 +227,7 @@ int parse_map(t_map *map, char **lines)
         {
             c = line[j];
             printf("Parsing character '%c' at line %d, position %d\n", c, i, j);
-			if (mapj >= map->mapx * map->mapy)
-            {
-                printf("Error: Index out of bounds at mapj=%d\n", mapj);
-                return (1);
-            }
-			if (c == '1')
+            if (c == '1')
                 map->mapp[mapj++] = WALL;
             else if (c == '0')
                 map->mapp[mapj++] = FLOOR;
@@ -251,7 +247,7 @@ int parse_map(t_map *map, char **lines)
                 return (1);
             }
         }
-         while (j < map->mapx)
+        while (j < map->mapx)
         {
             if (mapj >= map->mapx * map->mapy)
             {
@@ -265,6 +261,7 @@ int parse_map(t_map *map, char **lines)
     printf("Map parsed and loaded into memory.\n");
     return (0);
 }
+
 
 int	get_map_dimensions(t_map *map, char **lines)
 {

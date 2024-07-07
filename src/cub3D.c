@@ -15,6 +15,7 @@
 int main(int argc, char **argv)
 {
     t_map map;
+    t_file file;
 
     /*int mapp[] = {
         1, 1, 1, 1, 1, 1, 1, 1,
@@ -36,20 +37,17 @@ int main(int argc, char **argv)
         return (EXIT_FAILURE);
     }
     initiate_cub3Dmap(&map);
+    initiate_cub3Dfile(&file);
     if (parser(argv[1], &map) != 0)
     {
         printf("Error: Failed to parse map file.\n");
         return (EXIT_FAILURE);
     }
-    map.px = 150;
-    map.py = 150;
-    map.pa = 0;
-    map.pdx = cos(map.pa) * MOVE_SPEED;
-    map.pdy = sin(map.pa) * MOVE_SPEED;
-    map.plane_x = 0.66 * map.pdy;
-    map.plane_y = -0.66 * map.pdx;
-
     window(&map);
+
+    update_player_direction(&map);
+    printf("Player direction vectors: pdx = %f, pdy = %f\n", map.pdx, map.pdy);
+
     //map.mapp = mapp;
     map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
     map.p_layer = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -76,7 +74,6 @@ int main(int argc, char **argv)
 
     return (EXIT_SUCCESS);
 }
-
 
 void raycaster(t_map *map)
 {
@@ -183,7 +180,6 @@ void raycaster(t_map *map)
     }
 }
 
-
 void draw_map(t_map *map)
 {
     int y = 0;
@@ -205,10 +201,11 @@ void draw_map(t_map *map)
 }
 void update_player_direction(t_map *map)
 {
-    map->pdx = cos(map->pa) * MOVE_SPEED;
-    map->pdy = sin(map->pa) * MOVE_SPEED;
-    map->plane_x = 0.66 * map->pdy;
-    map->plane_y = -0.66 * map->pdx;
+    map->pdx = cos(map->pa);
+    map->pdy = sin(map->pa);
+    map->plane_x = -0.66 * map->pdy;
+    map->plane_y = 0.66 * map->pdx;
+    printf("Updated dir vectors: pdx = %f, pdy = %f\n", map->pdx, map->pdy);
 }
 
 void keyhook(void *param)
@@ -219,47 +216,68 @@ void keyhook(void *param)
     if (mlx_is_key_down(map->mlx, MLX_KEY_W))
     {
         double move_speed = MOVE_SPEED_FORWARD;
-        if (map->mapp[(int)((map->py + map->pdy * move_speed) / TEXTURE_SIZE) * map->mapx + (int)(map->px / TEXTURE_SIZE)] == 0)
-            map->py += map->pdy * move_speed;
-        if (map->mapp[(int)(map->py / TEXTURE_SIZE) * map->mapx + (int)((map->px + map->pdx * move_speed) / TEXTURE_SIZE)] == 0)
-            map->px += map->pdx * move_speed;
+        double new_px = map->px + map->pdx * move_speed;
+        double new_py = map->py + map->pdy * move_speed;
+        int new_map_x = (int)(new_px / TEXTURE_SIZE);
+        int new_map_y = (int)(new_py / TEXTURE_SIZE);
+
+        printf("Trying to move forward to (%f, %f) in map cell (%d, %d)\n", new_px, new_py, new_map_x, new_map_y);
+        if (new_map_x >= 0 && new_map_x < map->mapx && new_map_y >= 0 && new_map_y < map->mapy && map->mapp[new_map_y * map->mapx + new_map_x] != 1)
+        {
+            map->px = new_px;
+            map->py = new_py;
+            printf("Moved forward to (%f, %f)\n", map->px, map->py);
+        }
+        else
+        {
+            printf("Hit a wall at (%f, %f) in map cell (%d, %d)\n", new_px, new_py, new_map_x, new_map_y);
+        }
         moved = 1;
     }
     if (mlx_is_key_down(map->mlx, MLX_KEY_S))
     {
         double move_speed = MOVE_SPEED_BACKWARD;
-        if (map->mapp[(int)((map->py - map->pdy * move_speed) / TEXTURE_SIZE) * map->mapx + (int)(map->px / TEXTURE_SIZE)] == 0)
-            map->py -= map->pdy * move_speed;
-        if (map->mapp[(int)(map->py / TEXTURE_SIZE) * map->mapx + (int)((map->px - map->pdx * move_speed) / TEXTURE_SIZE)] == 0)
-            map->px -= map->pdx * move_speed;
+        double new_px = map->px - map->pdx * move_speed;
+        double new_py = map->py - map->pdy * move_speed;
+        int new_map_x = (int)(new_px / TEXTURE_SIZE);
+        int new_map_y = (int)(new_py / TEXTURE_SIZE);
+
+        printf("Trying to move backward to (%f, %f) in map cell (%d, %d)\n", new_px, new_py, new_map_x, new_map_y);  // Debugging print
+        if (new_map_x >= 0 && new_map_x < map->mapx && new_map_y >= 0 && new_map_y < map->mapy && map->mapp[new_map_y * map->mapx + new_map_x] != 1)
+        {
+            map->px = new_px;
+            map->py = new_py;
+            printf("Moved backward to (%f, %f)\n", map->px, map->py);
+        }
+        else
+        {
+            printf("Hit a wall at (%f, %f) in map cell (%d, %d)\n", new_px, new_py, new_map_x, new_map_y);
+        }
         moved = 1;
     }
     if (mlx_is_key_down(map->mlx, MLX_KEY_A))
-    {
-        map->pa += TURN_SPEED;
-        if (map->pa > 2 * PI)
-            map->pa -= 2 * PI;
-        update_player_direction(map);
-        moved = 1;
-    }
-    if (mlx_is_key_down(map->mlx, MLX_KEY_D))
     {
         map->pa -= TURN_SPEED;
         if (map->pa < 0)
             map->pa += 2 * PI;
         update_player_direction(map);
+        printf("Turned left. New direction vectors: pdx = %f, pdy = %f\n", map->pdx, map->pdy);
         moved = 1;
     }
-
+    if (mlx_is_key_down(map->mlx, MLX_KEY_D))
+    {
+        map->pa += TURN_SPEED;
+        if (map->pa > 2 * PI)
+            map->pa -= 2 * PI;
+        update_player_direction(map);
+        printf("Turned right. New direction vectors: pdx = %f, pdy = %f\n", map->pdx, map->pdy);
+        moved = 1;
+    }
     if (moved)
     {
-        // fill_background(map);
         ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width) * 4);
         raycaster(map);
-        // mlx_image_to_window(map->mlx, map->p_layer, 0, 0);
-        // mlx_image_to_window(map->mlx, map->test, map->px, map->py);
     }
-
     if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
     {
         mlx_close_window(map->mlx);
