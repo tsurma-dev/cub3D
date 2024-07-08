@@ -94,7 +94,7 @@ void	fill_wall(t_map *map);
 void	keyhook(void *param);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
-void	update_player_position(t_map *map, int d);
+void update_player_position(t_map *map, int d, int sideways);
 
 char	**ft_pointjoin(char **dest, char *src);
 int	parse_line(t_map *map, char *line);
