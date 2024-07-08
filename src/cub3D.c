@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 13:56:44 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/08 15:58:09 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ int	main(int argc, char **argv)
 	// fill_test(&map);
 	// fill_wall(&map);
 
-	map.no_t = mlx_load_png("./textures/Wall.png");
+	// map.no_t = mlx_load_png("./textures/Wall.png");
+	map.no_i = mlx_texture_to_image(map.mlx, map.no_t);
 	mlx_image_to_window(map.mlx, map.bg, 0, 0);
 	mlx_image_to_window(map.mlx, map.p_layer, 0, 0);
+	mlx_image_to_window(map.mlx, map.no_i, 0,0);
 
 	// draw_map(&map);
 	// mlx_image_to_window(map.mlx, map.test, map.px, map.py);
@@ -66,6 +68,8 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(map.mlx, &keyhook, &map);
 	mlx_loop(map.mlx);
 
+	mlx_delete_texture(map.no_t);
+	mlx_delete_image(map.mlx, map.no_i);
 	mlx_delete_image(map.mlx, map.bg);
 	// mlx_delete_image(map.mlx, map.test);
 	// mlx_delete_image(map.mlx, map.no_i);

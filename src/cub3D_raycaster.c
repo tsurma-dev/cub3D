@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 13:57:49 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/08 15:55:26 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	raycaster(t_map *map)
 	int		draw_start;
 	int		draw_end;
 	unsigned int		color;
+	double	wallx;
+	int		texx;
+	int		texy;
+	double	tex_pos;
+	double step;
 	int		y;
 
 	x = 0;
@@ -80,11 +85,11 @@ void	raycaster(t_map *map)
 				map_y += step_y;
 				side = 1;
 			}
-			if (map_x >= 0 && map_x < map->mapx && map_y >= 0
-				&& map_y < map->mapy && map->mapp[map_y * map->mapx
-					+ map_x] == 1)
+			if (map_x >= 0 && map_x < map->mapx && map_y >= 0 && map_y < map->mapy && map->mapp[map_y * map->mapx + map_x] == 1)
 				hit = 1;
 		}
+
+
 		if (side == 0)
 			perp_wall_dist = (map_x - map->px / TEXTURE_SIZE + (1 - step_x) / 2)
 				/ ray_dir_x;
@@ -103,15 +108,48 @@ void	raycaster(t_map *map)
 		else
 			color = 0x1111ff;
 		y = draw_start;
-		while (y < draw_end)
+		// while (y < draw_end)
+		// {
+		// 	color = tex_to_rgb(map, x % 64, (y - draw_start) % 64);
+		// 	mlx_put_pixel(map->p_layer, x, y, color);
+		// 	y++;
+		// }
+
+		if (side == 0)
+			wallx = map->py + perp_wall_dist * ray_dir_y;
+		else
+			wallx = map->px + perp_wall_dist * ray_dir_y;
+		wallx -= floor(wallx);
+		texx = (int)(wallx * (double)TEXTURE_SIZE);
+		if (side == 0 && ray_dir_x > 0)
+			texx = TEXTURE_SIZE - texx - 1;
+		if (side == 1 && ray_dir_x < 0)
+			texx = TEXTURE_SIZE - texx - 1;
+		step = 1.0 * TEXTURE_SIZE / line_height;
+		tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
+		y = draw_start - 1;
+		while (++y < draw_end)
 		{
-			color = (*(int *)(map->no_t->pixels)) >> 1;
+			texy = (int)tex_pos & TEXTURE_SIZE - 1;
+			tex_pos += step;
+			color = tex_to_rgb(map, texx, texy);
 			mlx_put_pixel(map->p_layer, x, y, color);
-			y++;
 		}
 		x++;
 	}
 }
+
+
+unsigned int	tex_to_rgb(t_map *map, int x, int y)
+{
+	int	rgb;
+	int	*array;
+
+	array = (int *)map->no_i->pixels;
+	rgb = array[y * TEXTURE_SIZE + x];
+	return (rgb);
+}
+
 
 int	rgb_to_int(int r, int g, int b)
 {
