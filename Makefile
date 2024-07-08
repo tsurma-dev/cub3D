@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/28 15:37:07 by tsurma            #+#    #+#              #
-#    Updated: 2024/07/08 12:01:17 by tsurma           ###   ########.fr        #
+#    Updated: 2024/07/08 13:44:03 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ MAKEFLAGS = --no-print-directory
 
 SRC = src/cub3D.c \
       src/parser.c src/parsing_utils.c src/parsing_utils2.c\
-	  src/cub3D_movement.c src/cub3D_mlx_utils.c
+	  src/cub3D_movement.c src/cub3D_mlx_utils.c src/cub3D_raycaster.c
 
 OBJ = $(SRC:.c=.o)
 
