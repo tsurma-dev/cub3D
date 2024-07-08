@@ -61,6 +61,7 @@ void	initiate_cub3dmap(t_map *map)
 	map->colour_c = -1;
 	map->colour_f = -1;
 }
+
 int	find_player_position(t_map *map, int *player_x, int *player_y)
 {
 	int	y;
@@ -110,99 +111,4 @@ void	flood_fill(int x, int y, int *tiles, t_map *map)
 	flood_fill(x - 1, y, tiles, map);
 	flood_fill(x, y + 1, tiles, map);
 	flood_fill(x, y - 1, tiles, map);
-}
-
-int	valid_map(int *map, int width, int height)
-{
-	int	player_count = 0;
-	int	y = 0;
-	int	x;
-
-	while (y < height)
-	{
-		x = 0;
-		while (x < width)
-		{
-			int tile = map[y * width + x];
-			if (tile == FLOOR || tile == WALL || tile == NOTHING)
-			{
-				x++;
-				continue;
-			}
-			else if (tile == N || tile == S || tile == E || tile == W)
-			{
-				player_count++;
-				x++;
-				continue;
-			}
-			else
-			{
-				return (0);
-			}
-		}
-		y++;
-	}
-	return (player_count == 1);
-}
-
-
-int	*matrix_dup(int *map, int width, int height)
-{
-	int	*dup;
-	int	i;
-
-	dup = malloc(width * height * sizeof(int));
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (i < width * height)
-	{
-		dup[i] = map[i];
-		i++;
-	}
-	return (dup);
-}
-
-int content_check(t_map *map, int player_x, int player_y)
-{
-	int	*copy;
-	int	y;
-	int	x;
-
-	copy = matrix_dup(map->mapp, map->mapx, map->mapy);
-	if (!copy)
-		return (0);
-	flood_fill(player_x, player_y, copy, map);
-	y = 0;
-	while (y < map->mapy)
-	{
-		x = 0;
-		while (x < map->mapx)
-		{
-			if (map->mapp[y * map->mapx + x] == FLOOR && copy[y * map->mapx + x] != -2)
-			{
-				free(copy);
-				return (0);
-			}
-			x++;
-		}
-		y++;
-	}
-	free(copy);
-	return (1);
-}
-
-int	check_valid_map(t_map *map, int player_x, int player_y)
-{
-	if (!valid_map(map->mapp, map->mapx, map->mapy))
-	{
-		printf("Error\nMap contains invalid chars or multiple/no player start positions\n");
-		return (0);
-	}
-	if (!content_check(map, player_x, player_y))
-	{
-		printf("Error\nMap is not enclosed fully/contains unreachable areas\n");
-		return (0);
-	}
-	return (1);
 }

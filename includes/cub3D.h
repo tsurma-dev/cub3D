@@ -107,6 +107,7 @@ void update_player_direction(t_map *map);
 void initiate_cub3dmap(t_map *map);
 
 int find_player_position(t_map *map, int *player_x, int *player_y);
+void	flood_fill(int x, int y, int *tiles, t_map *map);
 int check_valid_map(t_map *map, int player_x, int player_y);
 
 
