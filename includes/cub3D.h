@@ -37,6 +37,7 @@
 # define MLX_KEY_A 65
 # define MLX_KEY_D 68
 # define MLX_KEY_ESCAPE 256
+# define LATERAL_MOVE_SPEED_FACTOR 1
 
 # define N 78
 # define S 83

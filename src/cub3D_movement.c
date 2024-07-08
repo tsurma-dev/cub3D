@@ -23,45 +23,58 @@ void	update_player_direction(t_map *map)
 
 void update_player_position(t_map *map, int d, int sideways)
 {
-    double	move_speed;
-    double	new_px;
-	double	new_py;
-    int	new_map_x;
-	int	new_map_y;
+    double f_move_speed;
+    double lat_move_speed;
+    double forward_px;
+    double forward_py;
+    double sdways_px;
+    double sdways_py;
+    int forward_map_x;
+    int forward_map_y;
+    int sdways_map_x;
+    int sdways_map_y;
 
     if (d == 1)
-	{
-        move_speed = MOVE_SPEED_FORWARD;
+    {
+        f_move_speed = MOVE_SPEED_FORWARD;
     }
-	else
-	{
-        move_speed = -MOVE_SPEED_BACKWARD;
+    else if (d == -1)
+    {
+        f_move_speed = -MOVE_SPEED_BACKWARD;
     }
-    if (!sideways)
-	{
-        new_px = map->px + map->pdx * move_speed;
-        new_py = map->py + map->pdy * move_speed;
+    else
+    {
+        f_move_speed = 0;
     }
-	else
-	{
-        new_px = map->px + map->plane_x * move_speed * sideways;
-        new_py = map->py + map->plane_y * move_speed * sideways;
+    lat_move_speed = MOVE_SPEED_FORWARD * LATERAL_MOVE_SPEED_FACTOR;
+    forward_px = map->px + map->pdx * f_move_speed;
+    forward_py = map->py + map->pdy * f_move_speed;
+    sdways_px = map->px + map->plane_x * lat_move_speed * sideways;
+    sdways_py = map->py + map->plane_y * lat_move_speed * sideways;
+    forward_map_x = (int)(forward_px / TEXTURE_SIZE);
+    forward_map_y = (int)(forward_py / TEXTURE_SIZE);
+    sdways_map_x = (int)(sdways_px / TEXTURE_SIZE);
+    sdways_map_y = (int)(sdways_py / TEXTURE_SIZE);
+    if (map->mapp[forward_map_y * map->mapx + forward_map_x] == 1)
+    {
+        if (map->mapp[sdways_map_y * map->mapx + sdways_map_x] != 1)
+        {
+            map->px = sdways_px;
+            map->py = sdways_py;
+        }
     }
-    new_map_x = (int)(new_px / TEXTURE_SIZE);
-    new_map_y = (int)(new_py / TEXTURE_SIZE);
-
-    if (new_map_x >= 0 && new_map_x < map->mapx && new_map_y >= 0 && new_map_y < map->mapy &&
-        map->mapp[new_map_y * map->mapx + new_map_x] != 1)
-	{
-        map->px = new_px;
-        map->py = new_py;
-        printf("Moved to (%f, %f)\n", map->px, map->py);
-    }
-	else
-	{
-        printf("Hit a wall at (%f, %f) in map cell (%d, %d)\n", new_px, new_py, new_map_x, new_map_y);
+    else
+    {
+        map->px = forward_px;
+        map->py = forward_py;
+        if (sideways != 0 && map->mapp[sdways_map_y * map->mapx + sdways_map_x] != 1)
+        {
+            map->px = sdways_px;
+            map->py = sdways_py;
+        }
     }
 }
+
 
 void keyhook(void *param)
 {
