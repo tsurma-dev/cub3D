@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 15:21:40 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/08 17:45:12 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void update_player_position(t_map *map, int d, int sideways);
 unsigned int	tex_to_rgb(t_map *map, int x, int y);
-int	rgb_to_int(int r, int g, int b);
+unsigned int	reverse_bytes(int bytes);
+
 
 char	**ft_pointjoin(char **dest, char *src);
 int	parse_line(t_map *map, char *line);

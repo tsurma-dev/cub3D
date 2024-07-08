@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 15:55:26 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/08 17:54:52 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,20 +120,23 @@ void	raycaster(t_map *map)
 		else
 			wallx = map->px + perp_wall_dist * ray_dir_y;
 		wallx -= floor(wallx);
-		texx = (int)(wallx * (double)TEXTURE_SIZE);
+		texx = (int)((wallx * (double)TEXTURE_SIZE));
 		if (side == 0 && ray_dir_x > 0)
 			texx = TEXTURE_SIZE - texx - 1;
 		if (side == 1 && ray_dir_x < 0)
 			texx = TEXTURE_SIZE - texx - 1;
+		else
+			texx = TEXTURE_SIZE - texx - 1;
 		step = 1.0 * TEXTURE_SIZE / line_height;
 		tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-		y = draw_start - 1;
-		while (++y < draw_end)
+		y = draw_start;
+		while (y < draw_end)
 		{
-			texy = (int)tex_pos & TEXTURE_SIZE - 1;
+			texy = (int)tex_pos & (TEXTURE_SIZE - 1);
 			tex_pos += step;
 			color = tex_to_rgb(map, texx, texy);
 			mlx_put_pixel(map->p_layer, x, y, color);
+			y++;
 		}
 		x++;
 	}
@@ -142,21 +145,30 @@ void	raycaster(t_map *map)
 
 unsigned int	tex_to_rgb(t_map *map, int x, int y)
 {
-	int	rgb;
+	int	abgr;
+	int	rgba;
 	int	*array;
 
 	array = (int *)map->no_i->pixels;
-	rgb = array[y * TEXTURE_SIZE + x];
-	return (rgb);
+	abgr = array[y * TEXTURE_SIZE + x];
+	rgba = reverse_bytes(abgr);
+
+	return (rgba);
 }
 
-
-int	rgb_to_int(int r, int g, int b)
+unsigned int	reverse_bytes(int abgr)
 {
-	int	rgb;
+	unsigned int rgba = 0;
+	unsigned char byte;
+	int i;
 
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (-1);
-	rgb = (r << (3 * 8)) + (g << (2 * 8)) + (b << (1 * 8));
-	return (rgb);
+	i = 0;
+	while (i < 32)
+	{
+		byte = (abgr >> i) & 0xff;
+		rgba |= byte << (32 - 8 - i);
+		i += 8;
+	}
+	return (rgba);
 }
+
