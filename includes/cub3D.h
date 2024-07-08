@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/05 17:49:37 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/08 12:00:35 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,6 @@ typedef enum BOOL
 	TRUE
 }	t_BOOL;
 
-typedef struct cub3D_file
-{
-	char	**file;
-
-}	t_file;
-
-
 typedef struct cub3D_map
 {
 	void		*mlx;
@@ -81,7 +74,7 @@ typedef struct cub3D_map
 	mlx_image_t	*p_layer;
 	mlx_image_t	*test;
 	double px, py, pa;
-    double pdx, pdy;
+	double pdx, pdy;
 	double plane_x, plane_y;
 	int			mapx;
 	int			mapy;
@@ -92,16 +85,16 @@ typedef struct cub3D_map
 
 
 int		parser(char *path, t_map *map);
+void	parser_exit(char **file, t_map *map, int err_nr, const char *message);
 int		rgb_extractor(char *line);
 void	window(t_map *map);
 void	fill_background(t_map *map);
 void	fill_test(t_map *map);
 void	fill_wall(t_map *map);
-void keyhook(void *param);
+void	keyhook(void *param);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
-void	draw_line(t_map	*map, float beginx, float beginy, float endx, float endy);
-
+void	update_player_position(t_map *map, int d);
 
 char	**ft_pointjoin(char **dest, char *src);
 int	parse_line(t_map *map, char *line);
@@ -111,9 +104,7 @@ int	get_map_dimensions(t_map *map, char **lines);
 void check_ext(const char *filename);
 void update_player_direction(t_map *map);
 
-
-void initiate_cub3Dmap(t_map *map);
-void initiate_cub3Dfile(t_file *file);
+void initiate_cub3dmap(t_map *map);
 
 int find_player_position(t_map *map, int *player_x, int *player_y);
 int check_valid_map(t_map *map, int player_x, int player_y);
