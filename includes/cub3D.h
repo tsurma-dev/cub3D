@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 17:45:12 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 11:57:59 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 
 # define PI 3.1415
-# define SCREEN_WIDTH 1920
-# define SCREEN_HEIGHT 1080
+# define SCREEN_WIDTH 640
+# define SCREEN_HEIGHT 480
 # define TURN_SPEED 0.05
 # define MOVE_SPEED 2
 # define MOVE_SPEED_FORWARD 5.0
@@ -96,8 +96,9 @@ void	keyhook(void *param);
 void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void update_player_position(t_map *map, int d, int sideways);
-unsigned int	tex_to_rgb(t_map *map, int x, int y);
-unsigned int	reverse_bytes(int bytes);
+unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y);
+void	reverse_texture(mlx_texture_t *tex);
+
 
 
 char	**ft_pointjoin(char **dest, char *src);

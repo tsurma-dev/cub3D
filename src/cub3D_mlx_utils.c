@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:58:05 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 12:01:34 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 14:39:15 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	draw_map(t_map *map)
 
 void	window(t_map *map)
 {
-	mlx_set_setting(MLX_MAXIMIZED, true);
 	map->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D", true);
 	if (!map->mlx)
 		exit(EXIT_FAILURE);

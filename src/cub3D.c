@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 15:58:09 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 14:39:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,6 @@
 int	main(int argc, char **argv)
 {
 	t_map	map;
-
-	/*int mapp[] = {
-		1, 1, 1, 1, 1, 1, 1, 1,
-		1, 0, 0, 0, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 0, 0, 1,
-		1, 0, 0, 0, 0, 1, 0, 1,
-		1, 1, 1, 0, 0, 1, 0, 1,
-		1, 0, 0, 0, 0, 1, 1, 1,
-		1, 0, 0, 0, 0, 0, 0, 1,
-		1, 1, 1, 1, 1, 1, 1, 1};
-
-	map.mapx = 8;
-	map.mapy = 8;
-	*/
 
 	if (argc != 2)
 	{
@@ -46,21 +32,16 @@ int	main(int argc, char **argv)
 	update_player_direction(&map);
 	printf("Player direction vectors: pdx = %f, pdy = %f\n", map.pdx, map.pdy);
 
-	//map.mapp = mapp;
 	map.bg = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	map.p_layer = mlx_new_image(map.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	// map.test = mlx_new_image(map.mlx, 2, 2);
-	// map.no_i = mlx_new_image(map.mlx, 64, 64);
 
 	fill_background(&map);
 	// fill_test(&map);
 	// fill_wall(&map);
-
-	// map.no_t = mlx_load_png("./textures/Wall.png");
-	map.no_i = mlx_texture_to_image(map.mlx, map.no_t);
+	reverse_texture(map.no_t);
 	mlx_image_to_window(map.mlx, map.bg, 0, 0);
 	mlx_image_to_window(map.mlx, map.p_layer, 0, 0);
-	mlx_image_to_window(map.mlx, map.no_i, 0,0);
 
 	// draw_map(&map);
 	// mlx_image_to_window(map.mlx, map.test, map.px, map.py);
