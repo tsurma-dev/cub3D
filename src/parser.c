@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 14:42:40 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:49:16 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	parser(char *path, t_map *map)
 		parser_exit(file, map, EINVAL, "Map validation failed");
 	ft_free_matrix(file);
 	printf("Map validation successful.\n");
+	printf("c = %d\nf = %d\n", map->colour_c, map->colour_f);
 	return (0);
 }
 
@@ -124,6 +125,10 @@ int	rgb_extractor(char *line)
 	c = 3;
 	while (line[i] && line[i] == ' ')
 		++i;
+	if (line[i] == 'C' || line[i] == 'F')
+		i++;
+	while (line[i] && line[i] == ' ')
+		++i;
 	while (--c >= 0)
 	{
 		if (ft_isdigit(line[i]) == FALSE)
@@ -136,6 +141,7 @@ int	rgb_extractor(char *line)
 		if (line[i] == ',')
 			++i;
 	}
+	rgb = (rgb << 8) + 0xff;
 	return (rgb);
 }
 /*
@@ -199,8 +205,8 @@ int parse_map(t_map *map, char **lines)
 		while (line[++j])
 		{
 			c = line[j];
-			printf("Parsing character '%c' at line %d, position %d\n", c, i, j);
-			if (c == '1')
+			// printf("Parsing character '%c' at line %d, position %d\n", c, i, j);
+			if (c == '1' || c == ' ')
 				map->mapp[mapj++] = WALL;
 			else if (c == '0')
 				map->mapp[mapj++] = FLOOR;
