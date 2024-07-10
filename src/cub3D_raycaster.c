@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 14:38:42 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:02:52 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,21 @@ void	raycaster(t_map *map)
 		step = 1.0 * TEXTURE_SIZE / line_height;
 		tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
 		y = draw_start;
+		mlx_texture_t *tex;
+		// printf("%f\n", ray_dir_y);
+		if (side == 1 && ray_dir_y < 0)
+			tex = map->no_t;
+		else if (side == 1 && ray_dir_y > 0)
+			tex = map->so_t;
+		else if (side == 0 && ray_dir_x < 0)
+			tex = map->we_t;
+		else
+			tex = map->ea_t;
 		while (y < draw_end)
 		{
 			texy = (int)tex_pos & (TEXTURE_SIZE - 1);
 			tex_pos += step;
-			color = tex_to_rgb(map->no_t, texx, texy);
+			color = tex_to_rgb(tex, texx, texy);
 			mlx_put_pixel(map->p_layer, x, y, color);
 			y++;
 		}

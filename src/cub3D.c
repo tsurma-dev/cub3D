@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 14:39:49 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:07:43 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_map	map;
+	static t_map	map;
 
 	if (argc != 2)
 	{
@@ -40,6 +40,10 @@ int	main(int argc, char **argv)
 	// fill_test(&map);
 	// fill_wall(&map);
 	reverse_texture(map.no_t);
+	reverse_texture(map.so_t);
+	reverse_texture(map.we_t);
+	reverse_texture(map.ea_t);
+
 	mlx_image_to_window(map.mlx, map.bg, 0, 0);
 	mlx_image_to_window(map.mlx, map.p_layer, 0, 0);
 
@@ -50,7 +54,9 @@ int	main(int argc, char **argv)
 	mlx_loop(map.mlx);
 
 	mlx_delete_texture(map.no_t);
-	mlx_delete_image(map.mlx, map.no_i);
+	mlx_delete_texture(map.so_t);
+	mlx_delete_texture(map.we_t);
+	mlx_delete_texture(map.ea_t);
 	mlx_delete_image(map.mlx, map.bg);
 	// mlx_delete_image(map.mlx, map.test);
 	// mlx_delete_image(map.mlx, map.no_i);

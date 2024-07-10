@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 11:57:59 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:08:47 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ typedef enum BOOL
 typedef struct cub3D_map
 {
 	void		*mlx;
-	mlx_image_t	*no_i;
-	mlx_image_t	*so_i;
-	mlx_image_t	*we_i;
-	mlx_image_t	*ea_i;
 	mlx_texture_t *no_t;
 	mlx_texture_t *so_t;
 	mlx_texture_t *we_t;
@@ -91,9 +87,9 @@ int		rgb_extractor(char *line);
 void	window(t_map *map);
 void	fill_background(t_map *map);
 void	fill_test(t_map *map);
-void	fill_wall(t_map *map);
+// void	fill_wall(t_map *map);
 void	keyhook(void *param);
-void	draw_map(t_map *map);
+// void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void update_player_position(t_map *map, int d, int sideways);
 unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y);

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:18:52 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/08 12:02:53 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:07:59 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,6 @@ void	check_ext(const char *filename)
 
 void	initiate_cub3dmap(t_map *map)
 {
-	map->mlx = NULL;
-	map->no_i = NULL;
-	map->so_i = NULL;
-	map->we_i = NULL;
-	map->ea_i = NULL;
-	map->no_t = NULL;
-	map->so_t = NULL;
-	map->we_t = NULL;
-	map->ea_t = NULL;
-	map->bg = NULL;
-	map->p_layer = NULL;
-	map->test = NULL;
-	map->px = 0;
-	map->py = 0;
-	map->pa = 0;
-	map->pdx = 0;
-	map->pdy = 0;
-	map->plane_x = 0;
-	map->plane_y = 0;
-	map->mapx = 0;
-	map->mapy = 0;
-	map->mapp = NULL;
 	map->colour_c = -1;
 	map->colour_f = -1;
 }

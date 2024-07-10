@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:58:05 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 14:39:15 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 15:08:39 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ void	fill_test(t_map *map)
 	}
 }
 
-void	fill_wall(t_map *map)
-{
-	int	y;
-	int	x;
+// void	fill_wall(t_map *map)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = -1;
-	while (++y < 63)
-	{
-		x = -1;
-		while (++x < 63)
-		{
-			mlx_put_pixel(map->no_i, x, y, 0xffffff);
-		}
-	}
-}
+// 	y = -1;
+// 	while (++y < 63)
+// 	{
+// 		x = -1;
+// 		while (++x < 63)
+// 		{
+// 			mlx_put_pixel(map->no_i, x, y, 0xffffff);
+// 		}
+// 	}
+// }
 
 void	fill_background(t_map *map)
 {
@@ -72,28 +72,28 @@ void	fill_background(t_map *map)
 	}
 }
 
-void	draw_map(t_map *map)
-{
-	int	y;
-	int	x;
+// void	draw_map(t_map *map)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = 0;
-	x = 0;
-	while (y < map->mapy)
-	{
-		x = 0;
-		while (x < map->mapx)
-		{
-			if (map->mapp[y * map->mapx + x] == 1)
-			{
-				mlx_image_to_window(map->mlx, map->no_i,
-					x * TEXTURE_SIZE, y * TEXTURE_SIZE);
-			}
-			x++;
-		}
-		y++;
-	}
-}
+// 	y = 0;
+// 	x = 0;
+// 	while (y < map->mapy)
+// 	{
+// 		x = 0;
+// 		while (x < map->mapx)
+// 		{
+// 			if (map->mapp[y * map->mapx + x] == 1)
+// 			{
+// 				mlx_image_to_window(map->mlx, map->no_i,
+// 					x * TEXTURE_SIZE, y * TEXTURE_SIZE);
+// 			}
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
 
 void	window(t_map *map)
 {

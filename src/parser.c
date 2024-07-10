@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 12:18:26 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 14:42:40 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,33 +110,6 @@ mlx_texture_t	*path_extractor(char *line)
 	line[i] = '\0';
 	return (mlx_load_png(line));
 }
-
-// mlx_image_t	*load_image(char *line)
-// {
-// 	int				i;
-// 	int				fd;
-// 	mlx_texture_t	*tex;
-// 	mlx_image_t		*img;
-// 	i = 0;
-// 	while (line[i] && line[i] == ' ')
-// 		++i;
-// 	if (!line[i] || (line[i] != '.' || line[i + 1] != '/'))
-// 		return (NULL);
-// 	tex = mlx_load_png(line[i + 1]);
-// 	if (!tex)
-// 		return (NULL);
-// 	img = mlx_texture_to_image(mlx, tex);
-// 	free(tex);
-// }
-
-// int	rgb_to_int(int r, int g, int b)
-// {
-// 	int	rgb;
-// 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-// 		return (-1);
-// 	rgb = (r << (3 * 8)) + (g << (2 * 8)) + (b << (1 * 8));
-// 	return (rgb);
-// }
 
 int	rgb_extractor(char *line)
 {
