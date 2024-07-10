@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 15:08:47 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 18:36:55 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,36 @@ typedef struct cub3D_map
 	int			colour_f;
 }	t_map;
 
+typedef struct cub3D_ray
+{
+	mlx_texture_t *tex;
+	double			camera_x;
+	double			ray_dir_x;
+	double			ray_dir_y;
+	int				map_x;
+	int				map_y;
+	double			delta_dist_x;
+	double			delta_dist_y;
+	double			side_dist_x;
+	double			side_dist_y;
+	int				step_x;
+	int				step_y;
+	int				hit;
+	int				side;
+	double			perp_wall_dist;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	unsigned int	color;
+	double			wallx;
+	int				texx;
+	int				texy;
+	double			step;
+	double			tex_pos;
+	int				x;
+	int				y;
+}	t_ray;
+
 
 int		parser(char *path, t_map *map);
 void	parser_exit(char **file, t_map *map, int err_nr, const char *message);
@@ -95,6 +125,12 @@ void update_player_position(t_map *map, int d, int sideways);
 unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y);
 void	reverse_texture(mlx_texture_t *tex);
 
+mlx_texture_t	*select_texture(t_map *map, int side, double rdx, double rdy);
+void	find_coll(t_map *map, t_ray *r);
+void	draw_column(t_map *map, t_ray *r);
+void	set_step_dist(t_map *map, t_ray *r);
+void	set_draw_pos(t_ray *r);
+void	find_tex_hit(t_ray *r, float px, float py);
 
 
 char	**ft_pointjoin(char **dest, char *src);
@@ -110,9 +146,6 @@ void initiate_cub3dmap(t_map *map);
 int find_player_position(t_map *map, int *player_x, int *player_y);
 void	flood_fill(int x, int y, int *tiles, t_map *map);
 int check_valid_map(t_map *map, int player_x, int player_y);
-
-
-
 
 
 

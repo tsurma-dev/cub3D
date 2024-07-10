@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:26:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 14:25:32 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 17:19:38 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,11 @@ void	update_player_position(t_map *map, int d, int sideways)
 	int		sdways_map_y;
 
 	if (d == 1)
-	{
 		f_move_speed = MOVE_SPEED_FORWARD;
-	}
 	else if (d == -1)
-	{
 		f_move_speed = -MOVE_SPEED_BACKWARD;
-	}
 	else
-	{
 		f_move_speed = 0;
-	}
 	lat_move_speed = MOVE_SPEED_FORWARD * LATERAL_MOVE_SPEED_FACTOR;
 	forward_px = map->px + map->pdx * f_move_speed;
 	forward_py = map->py + map->pdy * f_move_speed;

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:58:05 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 15:40:21 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 17:39:13 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,24 @@ void	fill_test(t_map *map)
 
 void	fill_background(t_map *map)
 {
-	int	y;
-	int	x;
+	unsigned int	y;
+	unsigned int	x;
 
 	y = 0;
-	while (y < SCREEN_HEIGHT / 2)
+	while (y < map->bg->height / 2)
 	{
 		x = 0;
-		while (x < SCREEN_WIDTH)
+		while (x < map->bg->width)
 		{
 			mlx_put_pixel(map->bg, x, y, map->colour_c);
 			x++;
 		}
 		y++;
 	}
-	while (y < SCREEN_HEIGHT)
+	while (y < map->bg->height)
 	{
 		x = 0;
-		while (x < SCREEN_WIDTH)
+		while (x < map->bg->width)
 		{
 			mlx_put_pixel(map->bg, x, y, map->colour_f);
 			x++;

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 15:02:52 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 18:34:53 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,126 +14,133 @@
 
 void	raycaster(t_map *map)
 {
-	int				x;
-	double			camera_x;
-	double			ray_dir_x;
-	double			ray_dir_y;
-	int				map_x;
-	int				map_y;
-	double			delta_dist_x;
-	double			delta_dist_y;
-	double			side_dist_x;
-	double			side_dist_y;
-	int				step_x;
-	int				step_y;
-	int				hit;
-	int				side;
-	double			perp_wall_dist;
-	int				line_height;
-	int				draw_start;
-	int				draw_end;
-	unsigned int	color;
-	double			wallx;
-	int				texx;
-	int				texy;
-	double			step;
-	double			tex_pos;
-	int				y;
+	t_ray	r;
 
-	x = 0;
-	while (x < SCREEN_WIDTH)
+	r.x = 0;
+	while (r.x < SCREEN_WIDTH)
 	{
-		camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
-		ray_dir_x = map->pdx + map->plane_x * camera_x;
-		ray_dir_y = map->pdy + map->plane_y * camera_x;
-		map_x = (int)(map->px / TEXTURE_SIZE);
-		map_y = (int)(map->py / TEXTURE_SIZE);
-		delta_dist_x = fabs(1 / ray_dir_x);
-		delta_dist_y = fabs(1 / ray_dir_y);
-		if (ray_dir_x < 0)
-		{
-			step_x = -1;
-			side_dist_x = (map->px / TEXTURE_SIZE - map_x) * delta_dist_x;
-		}
-		else
-		{
-			step_x = 1;
-			side_dist_x = (map_x + 1 - map->px / TEXTURE_SIZE) * delta_dist_x;
-		}
-		if (ray_dir_y < 0)
-		{
-			step_y = -1;
-			side_dist_y = (map->py / TEXTURE_SIZE - map_y) * delta_dist_y;
-		}
-		else
-		{
-			step_y = 1;
-			side_dist_y = (map_y + 1 - map->py / TEXTURE_SIZE) * delta_dist_y;
-		}
-		hit = 0;
-		while (hit == 0)
-		{
-			if (side_dist_x < side_dist_y)
-			{
-				side_dist_x += delta_dist_x;
-				map_x += step_x;
-				side = 0;
-			}
-			else
-			{
-				side_dist_y += delta_dist_y;
-				map_y += step_y;
-				side = 1;
-			}
-			if (map_x >= 0 && map_x < map->mapx && map_y >= 0
-				&& map_y < map->mapy && map->mapp[map_y * map->mapx
-				+ map_x] == 1)
-				hit = 1;
-		}
-		if (side == 0)
-			perp_wall_dist = (side_dist_x - delta_dist_x);
-		else
-			perp_wall_dist = (side_dist_y - delta_dist_y);
-		line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
-		draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_start < 0)
-			draw_start = 0;
-		draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_end >= SCREEN_HEIGHT)
-			draw_end = SCREEN_HEIGHT - 1;
-		if (side == 0)
-			wallx = map->py / TEXTURE_SIZE + perp_wall_dist * ray_dir_y;
-		else
-			wallx = map->px / TEXTURE_SIZE + perp_wall_dist * ray_dir_x;
-		wallx -= floor(wallx);
-		texx = (int)(wallx * (double)TEXTURE_SIZE);
-		if (side == 0 && ray_dir_x > 0)
-			texx = TEXTURE_SIZE - texx - 1;
-		else if (side == 1 && ray_dir_y < 0)
-			texx = TEXTURE_SIZE - texx - 1;
-		step = 1.0 * TEXTURE_SIZE / line_height;
-		tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-		y = draw_start;
-		mlx_texture_t *tex;
-		// printf("%f\n", ray_dir_y);
-		if (side == 1 && ray_dir_y < 0)
-			tex = map->no_t;
-		else if (side == 1 && ray_dir_y > 0)
-			tex = map->so_t;
-		else if (side == 0 && ray_dir_x < 0)
-			tex = map->we_t;
-		else
-			tex = map->ea_t;
-		while (y < draw_end)
-		{
-			texy = (int)tex_pos & (TEXTURE_SIZE - 1);
-			tex_pos += step;
-			color = tex_to_rgb(tex, texx, texy);
-			mlx_put_pixel(map->p_layer, x, y, color);
-			y++;
-		}
-		x++;
+		r.camera_x = 2 * r.x / (double)SCREEN_WIDTH - 1;
+		r.ray_dir_x = map->pdx + map->plane_x * r.camera_x;
+		r.ray_dir_y = map->pdy + map->plane_y * r.camera_x;
+		r.map_x = (int)(map->px / TEXTURE_SIZE);
+		r.map_y = (int)(map->py / TEXTURE_SIZE);
+		r.delta_dist_x = fabs(1 / r.ray_dir_x);
+		r.delta_dist_y = fabs(1 / r.ray_dir_y);
+		set_step_dist(map, &r);
+		r.hit = 0;
+		find_coll(map, &r);
+		set_draw_pos(&r);
+		find_tex_hit(&r, map->px, map->py);
+		r.y = r.draw_start;
+		r.tex = select_texture(map, r.side, r.ray_dir_x, r.ray_dir_y);
+		draw_column(map, &r);
+		r.x++;
 	}
+}
+
+void	find_tex_hit(t_ray *r, float px, float py)
+{
+	if (r->side == 0)
+		r->wallx = py / TEXTURE_SIZE + r->perp_wall_dist * r->ray_dir_y;
+	else
+		r->wallx = px / TEXTURE_SIZE + r->perp_wall_dist * r->ray_dir_x;
+	r->wallx -= floor(r->wallx);
+	r->texx = (int)(r->wallx * (double)TEXTURE_SIZE);
+	if (r->side == 0 && r->ray_dir_x > 0)
+		r->texx = TEXTURE_SIZE - r->texx - 1;
+	else if (r->side == 1 && r->ray_dir_y < 0)
+		r->texx = TEXTURE_SIZE - r->texx - 1;
+	r->step = 1.0 * TEXTURE_SIZE / r->line_height;
+	r->tex_pos = (r->draw_start - SCREEN_HEIGHT / 2 + r->line_height / 2)
+		* r->step;
+}
+
+
+void	set_draw_pos(t_ray *r)
+{
+	r->line_height = (int)(SCREEN_HEIGHT / r->perp_wall_dist);
+	r->draw_start = -r->line_height / 2 + SCREEN_HEIGHT / 2;
+	if (r->draw_start < 0)
+		r->draw_start = 0;
+	r->draw_end = r->line_height / 2 + SCREEN_HEIGHT / 2;
+	if (r->draw_end >= SCREEN_HEIGHT)
+		r->draw_end = SCREEN_HEIGHT - 1;
+}
+
+void	set_step_dist(t_map *map, t_ray *r)
+{
+	if (r->ray_dir_x < 0)
+	{
+		r->step_x = -1;
+		r->side_dist_x = (map->px / TEXTURE_SIZE - r->map_x) * r->delta_dist_x;
+	}
+	else
+	{
+		r->step_x = 1;
+		r->side_dist_x = (r->map_x + 1 - map->px / TEXTURE_SIZE)
+			* r->delta_dist_x;
+	}
+	if (r->ray_dir_y < 0)
+	{
+		r->step_y = -1;
+		r->side_dist_y = (map->py / TEXTURE_SIZE - r->map_y) * r->delta_dist_y;
+	}
+	else
+	{
+		r->step_y = 1;
+		r->side_dist_y = (r->map_y + 1 - map->py / TEXTURE_SIZE)
+			* r->delta_dist_y;
+	}
+}
+
+void	draw_column(t_map *map, t_ray *r)
+{
+	while (r->y < r->draw_end)
+	{
+		r->texy = (int)r->tex_pos & (TEXTURE_SIZE - 1);
+		r->tex_pos += r->step;
+		r->color = tex_to_rgb(r->tex, r->texx, r->texy);
+		mlx_put_pixel(map->p_layer, r->x, r->y, r->color);
+		r->y++;
+	}
+}
+
+void	find_coll(t_map *map, t_ray *r)
+{
+	while (r->hit == 0)
+	{
+		if (r->side_dist_x < r->side_dist_y)
+		{
+			r->side_dist_x += r->delta_dist_x;
+			r->map_x += r->step_x;
+			r->side = 0;
+		}
+		else
+		{
+			r->side_dist_y += r->delta_dist_y;
+			r->map_y += r->step_y;
+			r->side = 1;
+		}
+		if (r->map_x >= 0 && r->map_x < map->mapx && r->map_y >= 0
+			&& r->map_y < map->mapy && map->mapp[r->map_y * map->mapx
+				+ r->map_x] == 1)
+			r->hit = 1;
+	}
+	if (r->side == 0)
+		r->perp_wall_dist = (r->side_dist_x - r->delta_dist_x);
+	else
+		r->perp_wall_dist = (r->side_dist_y - r->delta_dist_y);
+}
+
+mlx_texture_t	*select_texture(t_map *map, int side, double rdx, double rdy)
+{
+	if (side == 1 && rdy < 0)
+		return (map->no_t);
+	else if (side == 1)
+		return (map->so_t);
+	if (rdx < 0)
+		return (map->we_t);
+	return (map->ea_t);
 }
 
 unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y)
@@ -149,8 +156,8 @@ unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y)
 
 void	reverse_texture(mlx_texture_t *tex)
 {
-	int				i;
-	int				size;
+	int	i;
+	int	size;
 
 	size = tex->height * tex->width * 4;
 	i = 0;
@@ -165,4 +172,3 @@ void	reverse_texture(mlx_texture_t *tex)
 		i += 4;
 	}
 }
-

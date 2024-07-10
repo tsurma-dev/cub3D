@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 15:07:43 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/10 17:40:40 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(map.mlx, &keyhook, &map);
 	mlx_loop(map.mlx);
 
-	mlx_delete_texture(map.no_t);
-	mlx_delete_texture(map.so_t);
-	mlx_delete_texture(map.we_t);
-	mlx_delete_texture(map.ea_t);
-	mlx_delete_image(map.mlx, map.bg);
+	// mlx_delete_texture(map.no_t);
+	// mlx_delete_texture(map.so_t);
+	// mlx_delete_texture(map.we_t);
+	// mlx_delete_texture(map.ea_t);
+	// mlx_delete_image(map.mlx, map.bg);
+	// mlx_delete_image(map.mlx, map.p_layer);
+
 	// mlx_delete_image(map.mlx, map.test);
 	// mlx_delete_image(map.mlx, map.no_i);
 	free(map.mapp);
