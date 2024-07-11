@@ -18,7 +18,6 @@ void	update_player_direction(t_map *map)
 	map->pdy = sin(map->pa);
 	map->plane_x = -0.66 * map->pdy;
 	map->plane_y = 0.66 * map->pdx;
-	// printf("Updated dir vectors: pdx = %f, pdy = %f\n", map->pdx, map->pdy);
 }
 
 void	update_player_position(t_map *map, int d, int sideways)
@@ -108,3 +107,34 @@ void	keyhook(void *param)
 	if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(map->mlx);
 }
+
+void mouse_hook(double xpos, double ypos, void *param)
+{
+    static double last_x = SCREEN_WIDTH / 2;
+    static double last_y = SCREEN_HEIGHT / 2;
+    t_map *map;
+    double delta_x;
+    double delta_y;
+    double new_pitch;
+
+    map = (t_map *)param;
+    delta_x = xpos - last_x;
+    delta_y = ypos - last_y;
+    map->pa += delta_x * 0.005;
+    if (map->pa < 0)
+    {
+        map->pa += 2 * PI;
+    }
+    else if (map->pa > 2 * PI)
+    {
+        map->pa -= 2 * PI;
+    }
+    new_pitch = map->pitch + delta_y * 0.005;
+    map->pitch = fmax(fmin(new_pitch, SOME_MAX_PITCH), SOME_MIN_PITCH);
+    update_player_direction(map);
+    last_x = xpos;
+    last_y = ypos;
+    mlx_set_mouse_pos(map->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+}
+
+

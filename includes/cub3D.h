@@ -38,6 +38,10 @@
 # define MLX_KEY_D 68
 # define MLX_KEY_ESCAPE 256
 # define LATERAL_MOVE_SPEED_FACTOR 1
+# define SOME_MAX_HEIGHT 1.0
+# define SOME_MIN_HEIGHT -1.0
+# define SOME_MAX_PITCH 0.9
+# define SOME_MIN_PITCH -0.9
 
 # define N 78
 # define S 83
@@ -78,6 +82,8 @@ typedef struct cub3D_map
 	int			*mapp;
 	int			colour_c;
 	int			colour_f;
+	double		view_z;
+    double pitch;
 }	t_map;
 
 typedef struct cub3D_ray
@@ -119,6 +125,7 @@ void	fill_background(t_map *map);
 void	fill_test(t_map *map);
 // void	fill_wall(t_map *map);
 void	keyhook(void *param);
+void mouse_hook(double xpos, double ypos, void *param);
 // void	draw_map(t_map *map);
 void	raycaster(t_map *map);
 void update_player_position(t_map *map, int d, int sideways);
