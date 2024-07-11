@@ -40,6 +40,29 @@ void	initiate_cub3dmap(t_map *map)
 	map->colour_f = -1;
 }
 
+void	init_player(t_map *map, int x, int y)
+{
+	if (map->mapp[y * map->mapx + x] == N)
+	{
+		map->pa = 3 * PI / 2;
+	}
+	else if (map->mapp[y * map->mapx + x] == S)
+	{
+		map->pa = PI / 2;
+	}
+	else if (map->mapp[y * map->mapx + x] == E)
+	{
+		map->pa = 0;
+	}
+	else if (map->mapp[y * map->mapx + x] == W)
+	{
+		map->pa = PI;
+	}
+
+	map->px = x * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+	map->py = y * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+}
+
 int	find_player_position(t_map *map, int *player_x, int *player_y)
 {
 	int	y;
@@ -56,18 +79,7 @@ int	find_player_position(t_map *map, int *player_x, int *player_y)
 			{
 				*player_x = x;
 				*player_y = y;
-
-				if (map->mapp[y * map->mapx + x] == N)
-					map->pa = 3 * PI / 2;
-				else if (map->mapp[y * map->mapx + x] == S)
-					map->pa = PI / 2;
-				else if (map->mapp[y * map->mapx + x] == E)
-					map->pa = 0;
-				else if (map->mapp[y * map->mapx + x] == W)
-					map->pa = PI;
-
-				map->px = x * TEXTURE_SIZE + TEXTURE_SIZE / 2;
-				map->py = y * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+				init_player(map, x, y);
 				return (1);
 			}
 			x++;
@@ -76,6 +88,7 @@ int	find_player_position(t_map *map, int *player_x, int *player_y)
 	}
 	return (0);
 }
+
 
 void	flood_fill(int x, int y, int *tiles, t_map *map)
 {

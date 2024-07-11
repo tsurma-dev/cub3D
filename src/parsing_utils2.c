@@ -12,12 +12,25 @@
 
 #include "../includes/cub3D.h"
 
+int	is_valid_tile(int tile, int *player_count)
+{
+	if (tile == FLOOR || tile == WALL || tile == NOTHING)
+	{
+		return 1;
+	}
+	else if (tile == N || tile == S || tile == E || tile == W)
+	{
+		(*player_count)++;
+		return 1;
+	}
+	return 0;
+}
+
 int	valid_map(int *map, int width, int height)
 {
-	int	player_count;
-	int	y;
-	int	x;
-	int	tile;
+	int player_count;
+	int y;
+	int x;
 
 	player_count = 0;
 	y = 0;
@@ -26,22 +39,11 @@ int	valid_map(int *map, int width, int height)
 		x = 0;
 		while (x < width)
 		{
-			tile = map[y * width + x];
-			if (tile == FLOOR || tile == WALL || tile == NOTHING)
+			if (!is_valid_tile(map[y * width + x], &player_count))
 			{
-				x++;
-				continue ;
+				return 0;
 			}
-			else if (tile == N || tile == S || tile == E || tile == W)
-			{
-				player_count++;
-				x++;
-				continue ;
-			}
-			else
-			{
-				return (0);
-			}
+			x++;
 		}
 		y++;
 	}
@@ -65,15 +67,11 @@ int	*matrix_dup(int *map, int width, int height)
 	return (dup);
 }
 
-int	content_check(t_map *map, int player_x, int player_y)
+int	validate_map_copy(int *copy, t_map *map, int player_x, int player_y)
 {
-	int	*copy;
 	int	y;
 	int	x;
 
-	copy = matrix_dup(map->mapp, map->mapx, map->mapy);
-	if (!copy)
-		return (0);
 	flood_fill(player_x, player_y, copy, map);
 	y = 0;
 	while (y < map->mapy)
@@ -81,19 +79,29 @@ int	content_check(t_map *map, int player_x, int player_y)
 		x = 0;
 		while (x < map->mapx)
 		{
-			if (map->mapp[y * map->mapx + x] == FLOOR && copy[y * map->mapx
-					+ x] != -2)
+			if (map->mapp[y * map->mapx + x] == FLOOR && copy[y * map->mapx + x] != -2)
 			{
-				free(copy);
 				return (0);
 			}
 			x++;
 		}
 		y++;
 	}
-	free(copy);
 	return (1);
 }
+int	content_check(t_map *map, int player_x, int player_y)
+{
+	int	*copy;
+	int	result;
+
+	copy = matrix_dup(map->mapp, map->mapx, map->mapy);
+	if (!copy)
+		return (0);
+	result = validate_map_copy(copy, map, player_x, player_y);
+	free(copy);
+	return result;
+}
+
 
 int	check_valid_map(t_map *map, int player_x, int player_y)
 {

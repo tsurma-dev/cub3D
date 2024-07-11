@@ -28,22 +28,6 @@ void	fill_test(t_map *map)
 	}
 }
 
-// void	fill_wall(t_map *map)
-// {
-// 	int	y;
-// 	int	x;
-
-// 	y = -1;
-// 	while (++y < 63)
-// 	{
-// 		x = -1;
-// 		while (++x < 63)
-// 		{
-// 			mlx_put_pixel(map->no_i, x, y, 0xffffff);
-// 		}
-// 	}
-// }
-
 void	fill_background(t_map *map)
 {
 	unsigned int	y;
@@ -72,6 +56,14 @@ void	fill_background(t_map *map)
 	}
 }
 
+void	window(t_map *map)
+{
+	map->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D", true);
+	if (!map->mlx)
+		exit(EXIT_FAILURE);
+}
+
+/*
 // void	draw_map(t_map *map)
 // {
 // 	int	y;
@@ -95,9 +87,19 @@ void	fill_background(t_map *map)
 // 	}
 // }
 
-void	window(t_map *map)
-{
-	map->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D", true);
-	if (!map->mlx)
-		exit(EXIT_FAILURE);
-}
+// void	fill_wall(t_map *map)
+// {
+// 	int	y;
+// 	int	x;
+
+// 	y = -1;
+// 	while (++y < 63)
+// 	{
+// 		x = -1;
+// 		while (++x < 63)
+// 		{
+// 			mlx_put_pixel(map->no_i, x, y, 0xffffff);
+// 		}
+// 	}
+// }
+*/
