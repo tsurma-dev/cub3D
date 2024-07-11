@@ -19,7 +19,9 @@ MAKEFLAGS = --no-print-directory
 
 SRC = src/cub3D.c \
       src/parser.c src/parsing_utils.c src/parsing_utils2.c\
-	  src/cub3D_movement.c src/cub3D_mlx_utils.c src/cub3D_raycaster.c
+	  src/cub3D_movement.c src/cub3D_mlx_utils.c src/cub3D_raycaster.c\
+	  src/cub3D_raycaster2.c src/parsing_utils3.c src/parsing_utils4.c\
+	  src/cub3D_utils.c
 
 OBJ = $(SRC:.c=.o)
 

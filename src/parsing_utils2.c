@@ -16,21 +16,21 @@ int	is_valid_tile(int tile, int *player_count)
 {
 	if (tile == FLOOR || tile == WALL || tile == NOTHING)
 	{
-		return 1;
+		return (1);
 	}
 	else if (tile == N || tile == S || tile == E || tile == W)
 	{
 		(*player_count)++;
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
 int	valid_map(int *map, int width, int height)
 {
-	int player_count;
-	int y;
-	int x;
+	int	player_count;
+	int	y;
+	int	x;
 
 	player_count = 0;
 	y = 0;
@@ -41,7 +41,7 @@ int	valid_map(int *map, int width, int height)
 		{
 			if (!is_valid_tile(map[y * width + x], &player_count))
 			{
-				return 0;
+				return (0);
 			}
 			x++;
 		}
@@ -79,7 +79,8 @@ int	validate_map_copy(int *copy, t_map *map, int player_x, int player_y)
 		x = 0;
 		while (x < map->mapx)
 		{
-			if (map->mapp[y * map->mapx + x] == FLOOR && copy[y * map->mapx + x] != -2)
+			if (map->mapp[y * map->mapx + x] == FLOOR && copy[y * map->mapx
+					+ x] != -2)
 			{
 				return (0);
 			}
@@ -89,6 +90,7 @@ int	validate_map_copy(int *copy, t_map *map, int player_x, int player_y)
 	}
 	return (1);
 }
+
 int	content_check(t_map *map, int player_x, int player_y)
 {
 	int	*copy;
@@ -99,21 +101,5 @@ int	content_check(t_map *map, int player_x, int player_y)
 		return (0);
 	result = validate_map_copy(copy, map, player_x, player_y);
 	free(copy);
-	return result;
-}
-
-
-int	check_valid_map(t_map *map, int player_x, int player_y)
-{
-	if (!valid_map(map->mapp, map->mapx, map->mapy))
-	{
-		printf("Error: Map has invalid chars or mult/no player start pos\n");
-		return (0);
-	}
-	if (!content_check(map, player_x, player_y))
-	{
-		printf("Error: Map is not enclosed fully/contains unreachable areas\n");
-		return (0);
-	}
-	return (1);
+	return (result);
 }

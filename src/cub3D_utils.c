@@ -12,4 +12,28 @@
 
 #include "../includes/cub3D.h"
 
+char	**ft_pointjoin(char **dest, char *src)
+{
+	char	**ret;
+	int		i;
 
+	if (!src)
+		return (NULL);
+	i = 0;
+	if (dest != NULL)
+	{
+		while (dest[i] != NULL)
+			++i;
+	}
+	ret = ft_calloc(sizeof(char *), i + 2);
+	if (!ret)
+		return (NULL);
+	ret[i] = src;
+	while (i > 0)
+	{
+		i--;
+		ret[i] = dest[i];
+	}
+	free(dest);
+	return (ret);
+}

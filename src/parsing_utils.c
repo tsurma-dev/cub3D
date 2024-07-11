@@ -58,7 +58,6 @@ void	init_player(t_map *map, int x, int y)
 	{
 		map->pa = PI;
 	}
-
 	map->px = x * TEXTURE_SIZE + TEXTURE_SIZE / 2;
 	map->py = y * TEXTURE_SIZE + TEXTURE_SIZE / 2;
 }
@@ -74,8 +73,9 @@ int	find_player_position(t_map *map, int *player_x, int *player_y)
 		x = 0;
 		while (x < map->mapx)
 		{
-			if (map->mapp[y * map->mapx + x] == N || map->mapp[y * map->mapx + x] == S ||
-				map->mapp[y * map->mapx + x] == E || map->mapp[y * map->mapx + x] == W)
+			if (map->mapp[y * map->mapx + x] == N || map->mapp[y * map->mapx
+				+ x] == S || map->mapp[y * map->mapx + x] == E || map->mapp[y
+				* map->mapx + x] == W)
 			{
 				*player_x = x;
 				*player_y = y;
@@ -87,19 +87,4 @@ int	find_player_position(t_map *map, int *player_x, int *player_y)
 		y++;
 	}
 	return (0);
-}
-
-
-void	flood_fill(int x, int y, int *tiles, t_map *map)
-{
-	if (x < 0 || y < 0 || y >= map->mapy || x >= map->mapx
-		|| tiles[y * map->mapx + x] == WALL || tiles[y * map->mapx + x] == -2)
-		return ;
-
-	tiles[y * map->mapx + x] = -2;
-
-	flood_fill(x + 1, y, tiles, map);
-	flood_fill(x - 1, y, tiles, map);
-	flood_fill(x, y + 1, tiles, map);
-	flood_fill(x, y - 1, tiles, map);
 }
