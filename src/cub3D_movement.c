@@ -106,6 +106,17 @@ void	keyhook(void *param)
 	raycaster(map);
 }
 
+void	update_view(t_map *map, double delta_x, double delta_y)
+{
+	const double	damping_factor = 0.002;
+
+	map->pa += delta_x * damping_factor;
+	map->pa = fmod(map->pa, 2 * PI);
+	map->view_z += delta_y * damping_factor * 50;
+	map->view_z = fmin(fmax(map->view_z, SOME_MIN_HEIGHT), SOME_MAX_HEIGHT);
+	update_player_direction(map);
+}
+
 void	mouse_hook(double xpos, double ypos, void *param)
 {
 	static double	last_x = SCREEN_WIDTH / 2;
@@ -113,24 +124,20 @@ void	mouse_hook(double xpos, double ypos, void *param)
 	t_map			*map;
 	double			delta_x;
 	double			delta_y;
-	double			new_pitch;
 
 	map = (t_map *)param;
 	delta_x = xpos - last_x;
 	delta_y = ypos - last_y;
-	map->pa += delta_x * 0.002;
-	if (map->pa < 0)
+	update_view(map, delta_x, delta_y);
+	if (fabs(delta_x) > 1 || fabs(delta_y) > 1)
 	{
-		map->pa += 2 * PI;
+		mlx_set_mouse_pos(map->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		last_x = SCREEN_WIDTH / 2;
+		last_y = SCREEN_HEIGHT / 2;
 	}
-	else if (map->pa > 2 * PI)
+	else
 	{
-		map->pa -= 2 * PI;
+		last_x = xpos;
+		last_y = ypos;
 	}
-	new_pitch = map->pitch + delta_y * 0.002;
-	map->pitch = fmax(fmin(new_pitch, SOME_MAX_PITCH), SOME_MIN_PITCH);
-	update_player_direction(map);
-	last_x = xpos;
-	last_y = ypos;
-	mlx_set_mouse_pos(map->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }

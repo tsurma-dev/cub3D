@@ -54,7 +54,7 @@ int	main(int argc, char **argv)
 
 	// draw_map(&map);
 	// mlx_image_to_window(map.mlx, map.test, map.px, map.py);
-    //mlx_cursor_hook(map.mlx, mouse_hook, &map);
+    mlx_cursor_hook(map.mlx, mouse_hook, &map);
 
 	mlx_loop_hook(map.mlx, &keyhook, &map);
 	mlx_key_hook(map.mlx, &keyhook2, (void *)&map);
