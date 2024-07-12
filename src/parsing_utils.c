@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:18:52 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/10 15:07:59 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:03:39 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	init_player(t_map *map, int x, int y)
 	{
 		map->pa = PI;
 	}
-	map->px = x * TEXTURE_SIZE + TEXTURE_SIZE / 2;
-	map->py = y * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+	map->px = x + 0.5;
+	map->py = y + 0.5;
 }
 
 int	find_player_position(t_map *map, int *player_x, int *player_y)

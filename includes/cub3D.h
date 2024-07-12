@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 15:32:57 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:02:31 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 # define TURN_SPEED 0.05
-# define MOVE_SPEED 2
-# define MOVE_SPEED_FORWARD 5.0
-# define MOVE_SPEED_BACKWARD 2.5
+# define MOVE_SPEED
+# define MOVE_SPEED_FORWARD 0.15
+# define MOVE_SPEED_BACKWARD 0.1
 # define TEXTURE_SIZE 64
 # define LATERAL_MOVE_SPEED_FACTOR 1
 # define SOME_MAX_HEIGHT 1.0

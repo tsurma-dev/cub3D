@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 18:34:53 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 15:54:47 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	raycaster(t_map *map)
 		r.camera_x = 2 * r.x / (double)SCREEN_WIDTH - 1;
 		r.ray_dir_x = map->pdx + map->plane_x * r.camera_x;
 		r.ray_dir_y = map->pdy + map->plane_y * r.camera_x;
-		r.map_x = (int)(map->px / TEXTURE_SIZE);
-		r.map_y = (int)(map->py / TEXTURE_SIZE);
+		r.map_x = (int)(map->px);
+		r.map_y = (int)(map->py);
 		r.delta_dist_x = fabs(1 / r.ray_dir_x);
 		r.delta_dist_y = fabs(1 / r.ray_dir_y);
 		set_step_dist(map, &r);
@@ -41,9 +41,9 @@ void	raycaster(t_map *map)
 void	find_tex_hit(t_ray *r, float px, float py)
 {
 	if (r->side == 0)
-		r->wallx = py / TEXTURE_SIZE + r->perp_wall_dist * r->ray_dir_y;
+		r->wallx = py + r->perp_wall_dist * r->ray_dir_y;
 	else
-		r->wallx = px / TEXTURE_SIZE + r->perp_wall_dist * r->ray_dir_x;
+		r->wallx = px + r->perp_wall_dist * r->ray_dir_x;
 	r->wallx -= floor(r->wallx);
 	r->texx = (int)(r->wallx * (double)TEXTURE_SIZE);
 	if (r->side == 0 && r->ray_dir_x > 0)
@@ -72,23 +72,23 @@ void	set_step_dist(t_map *map, t_ray *r)
 	if (r->ray_dir_x < 0)
 	{
 		r->step_x = -1;
-		r->side_dist_x = (map->px / TEXTURE_SIZE - r->map_x) * r->delta_dist_x;
+		r->side_dist_x = (map->px - r->map_x) * r->delta_dist_x;
 	}
 	else
 	{
 		r->step_x = 1;
-		r->side_dist_x = (r->map_x + 1 - map->px / TEXTURE_SIZE)
+		r->side_dist_x = (r->map_x + 1 - map->px)
 			* r->delta_dist_x;
 	}
 	if (r->ray_dir_y < 0)
 	{
 		r->step_y = -1;
-		r->side_dist_y = (map->py / TEXTURE_SIZE - r->map_y) * r->delta_dist_y;
+		r->side_dist_y = (map->py - r->map_y) * r->delta_dist_y;
 	}
 	else
 	{
 		r->step_y = 1;
-		r->side_dist_y = (r->map_y + 1 - map->py / TEXTURE_SIZE)
+		r->side_dist_y = (r->map_y + 1 - map->py)
 			* r->delta_dist_y;
 	}
 }

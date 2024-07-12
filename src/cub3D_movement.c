@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:26:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 15:33:47 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 15:50:10 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	update_player_position(t_map *map, int d, int sideways)
 	forward_py = map->py + map->pdy * f_move_speed;
 	sdways_px = map->px + map->plane_x * lat_move_speed * sideways;
 	sdways_py = map->py + map->plane_y * lat_move_speed * sideways;
-	forward_map_x = (int)(forward_px / TEXTURE_SIZE);
-	forward_map_y = (int)(forward_py / TEXTURE_SIZE);
-	sdways_map_x = (int)(sdways_px / TEXTURE_SIZE);
-	sdways_map_y = (int)(sdways_py / TEXTURE_SIZE);
+	forward_map_x = (int)(forward_px);
+	forward_map_y = (int)(forward_py);
+	sdways_map_x = (int)(sdways_px);
+	sdways_map_y = (int)(sdways_py);
 	if (map->mapp[forward_map_y * map->mapx + forward_map_x] == 1)
 	{
 		if (map->mapp[sdways_map_y * map->mapx + sdways_map_x] != 1)
