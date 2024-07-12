@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 18:36:55 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 15:32:57 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,13 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 
 # define PI 3.1415
-# define SCREEN_WIDTH 640
-# define SCREEN_HEIGHT 480
+# define SCREEN_WIDTH 1920
+# define SCREEN_HEIGHT 1080
 # define TURN_SPEED 0.05
 # define MOVE_SPEED 2
 # define MOVE_SPEED_FORWARD 5.0
 # define MOVE_SPEED_BACKWARD 2.5
 # define TEXTURE_SIZE 64
-# define MLX_KEY_W 87
-# define MLX_KEY_S 83
-# define MLX_KEY_A 65
-# define MLX_KEY_D 68
-# define MLX_KEY_ESCAPE 256
 # define LATERAL_MOVE_SPEED_FACTOR 1
 # define SOME_MAX_HEIGHT 1.0
 # define SOME_MIN_HEIGHT -1.0
@@ -71,6 +66,7 @@ typedef struct cub3D_map
 	mlx_texture_t *so_t;
 	mlx_texture_t *we_t;
 	mlx_texture_t *ea_t;
+	mlx_image_t	*wall;
 	mlx_image_t	*bg;
 	mlx_image_t	*p_layer;
 	mlx_image_t	*test;
@@ -125,6 +121,7 @@ void	fill_background(t_map *map);
 void	fill_test(t_map *map);
 // void	fill_wall(t_map *map);
 void	keyhook(void *param);
+void	keyhook2(mlx_key_data_t keydata, void *ma);
 void mouse_hook(double xpos, double ypos, void *param);
 // void	draw_map(t_map *map);
 void	raycaster(t_map *map);
@@ -157,5 +154,6 @@ int	valid_map(int *map, int width, int height);
 int	content_check(t_map *map, int player_x, int player_y);
 int	valid_char(char c);
 
+void	draw_map(t_map *map);
 
 #endif

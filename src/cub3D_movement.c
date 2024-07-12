@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:26:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 17:19:38 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 15:33:47 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ void	keyhook(void *param)
 	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width)
 		* 4);
 	raycaster(map);
-	if (mlx_is_key_down(map->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(map->mlx);
 }
 
 void	mouse_hook(double xpos, double ypos, void *param)

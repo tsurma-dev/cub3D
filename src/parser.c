@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 15:49:16 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 14:11:34 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	parse_line(t_map *map, char *line)
 		map->colour_c = (rgb_extractor(line));
 	else if (ft_strnstr(line, "F", len) != NULL)
 		map->colour_f = (rgb_extractor(line));
-	else if (ft_strnstr(line, "1111", len) != NULL)
+	else if (ft_strnstr(line, "1", len) != NULL)
 		return (3);
 	else
 		return (1);
