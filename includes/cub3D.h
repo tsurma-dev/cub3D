@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 16:02:31 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 17:11:35 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include "../MLX42/include/MLX42/MLX42.h"
 
 # define PI 3.1415
-# define SCREEN_WIDTH 1920
-# define SCREEN_HEIGHT 1080
+# define SCREEN_WIDTH 640
+# define SCREEN_HEIGHT 480
 # define TURN_SPEED 0.05
 # define MOVE_SPEED
 # define MOVE_SPEED_FORWARD 0.15
@@ -69,11 +69,14 @@ typedef struct cub3D_map
 	mlx_image_t	*wall;
 	mlx_image_t	*bg;
 	mlx_image_t	*p_layer;
-	mlx_image_t	*test;
+	mlx_image_t	*m_layer;
 	double px, py, pa;
 	double pdx, pdy;
 	double plane_x, plane_y;
 	int			mapx;
+	int			minx;
+	int			miny;
+	int			cube;
 	int			mapy;
 	int			*mapp;
 	int			colour_c;
@@ -118,7 +121,7 @@ void	parser_exit(char **file, t_map *map, int err_nr, const char *message);
 int		rgb_extractor(char *line);
 void	window(t_map *map);
 void	fill_background(t_map *map);
-void	fill_test(t_map *map);
+// void	fill_test(t_map *map);
 // void	fill_wall(t_map *map);
 void	keyhook(void *param);
 void	keyhook2(mlx_key_data_t keydata, void *ma);
@@ -155,5 +158,6 @@ int	content_check(t_map *map, int player_x, int player_y);
 int	valid_char(char c);
 
 void	draw_map(t_map *map);
+void	draw_player(t_map *map);
 
 #endif

@@ -6,27 +6,27 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:58:05 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/10 17:39:13 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:58:04 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-void	fill_test(t_map *map)
-{
-	int	y;
-	int	x;
+// void	fill_test(t_map *map)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = -1;
-	while (++y < 2)
-	{
-		x = -1;
-		while (++x < 2)
-		{
-			mlx_put_pixel(map->test, x, y, 0x0000ff);
-		}
-	}
-}
+// 	y = -1;
+// 	while (++y < 2)
+// 	{
+// 		x = -1;
+// 		while (++x < 2)
+// 		{
+// 			mlx_put_pixel(map->test, x, y, 0x0000ff);
+// 		}
+// 	}
+// }
 
 void	fill_background(t_map *map)
 {

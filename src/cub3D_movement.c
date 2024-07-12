@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:26:27 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 15:50:10 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/12 17:06:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	keyhook(void *param)
 	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width)
 		* 4);
 	raycaster(map);
+	draw_player(map);
+
 }
 
 void	update_view(t_map *map, double delta_x, double delta_y)
