@@ -10,4 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/cub3D.h"
 
+void	update_view(t_map *map, double delta_x, double delta_y)
+{
+	const double	damping_factor = 0.002;
+
+	map->pa += delta_x * damping_factor;
+	map->pa = fmod(map->pa, 2 * PI);
+	map->view_z += delta_y * damping_factor * 50;
+	map->view_z = fmin(fmax(map->view_z, SOME_MIN_HEIGHT), SOME_MAX_HEIGHT);
+	update_player_direction(map);
+}
+
+void	mouse_hook(double xpos, double ypos, void *param)
+{
+	static double	last_x = SCREEN_WIDTH / 2;
+	static double	last_y = SCREEN_HEIGHT / 2;
+	t_map			*map;
+	double			delta_x;
+	double			delta_y;
+
+	map = (t_map *)param;
+	delta_x = xpos - last_x;
+	delta_y = ypos - last_y;
+	update_view(map, delta_x, delta_y);
+	if (fabs(delta_x) > 1 || fabs(delta_y) > 1)
+	{
+		mlx_set_mouse_pos(map->mlx, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+		last_x = SCREEN_WIDTH / 2;
+		last_y = SCREEN_HEIGHT / 2;
+	}
+	else
+	{
+		last_x = xpos;
+		last_y = ypos;
+	}
+}
