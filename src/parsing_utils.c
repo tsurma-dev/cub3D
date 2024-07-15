@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:18:52 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/12 16:03:39 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:08:33 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	check_ext(const char *filename)
 	extension = ft_strrchr(filename, '.');
 	if (!extension || ft_strcmp(extension, ".cub") != 0)
 	{
-		printf("Error: Map file must have a .cub extension\n");
+		printf("Error\nMap file must have a .cub extension\n");
 		exit(EXIT_FAILURE);
 	}
 }

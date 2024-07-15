@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils4.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:50:58 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/11 17:51:05 by olobresh         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:08:06 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	process_map_line(t_map *map, char *line, int *mapj)
 		c = line[j];
 		if (!valid_char(c))
 		{
-			printf("Error: Unexpected character '%c' in map\n", c);
+			printf("Error\nUnexpected character '%c' in map\n", c);
 			return (1);
 		}
 		map->mapp[(*mapj)++] = char_to_int(c);
@@ -64,7 +64,7 @@ int	process_map_line(t_map *map, char *line, int *mapj)
 	{
 		if (*mapj >= map->mapx * map->mapy)
 		{
-			printf("Error: Index out of bounds at mapj=%d\n", *mapj);
+			printf("Error\nIndex out of bounds at mapj=%d\n", *mapj);
 			return (1);
 		}
 		map->mapp[(*mapj)++] = NOTHING;
@@ -81,7 +81,7 @@ int	parse_map(t_map *map, char **lines)
 
 	if (get_map_dimensions(map, lines) == -1)
 	{
-		printf("Error: Could not get map dimensions\n");
+		printf("Error\nCould not get map dimensions\n");
 		return (-1);
 	}
 	map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
@@ -92,7 +92,6 @@ int	parse_map(t_map *map, char **lines)
 	while (lines[i])
 	{
 		line = lines[i];
-		trim_whitespace(&line);
 		if (process_map_line(map, line, &mapj) != 0)
 			return (1);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 14:11:34 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:03:40 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ int	parser(char *path, t_map *map)
 		parser_exit(NULL, map, ENOMEM, "Could not join lines");
 	i = -1;
 	while (file[++i] && parse_line(map, file[i]) != 3)
-	{
 		printf("Parsing line %d: %s\n", i, file[i]);
-	}
 	printf("Map data found, parsing map\n");
 	if (parse_map(map, &file[i]) != 0)
 		parser_exit(file, map, 1, "Could not parse map");

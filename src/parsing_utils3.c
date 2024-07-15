@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 15:55:34 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/11 15:55:36 by olobresh         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:07:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	check_valid_map(t_map *map, int player_x, int player_y)
 {
 	if (!valid_map(map->mapp, map->mapx, map->mapy))
 	{
-		printf("Error: Map has invalid chars or mult/no player start pos\n");
+		printf("Error\nMap has invalid chars or mult/no player start pos\n");
 		return (0);
 	}
 	if (!content_check(map, player_x, player_y))
 	{
-		printf("Error: Map is not enclosed fully/contains unreachable areas\n");
+		printf("Error\nMap is not enclosed fully/contains unreachable areas\n");
 		return (0);
 	}
 	return (1);
