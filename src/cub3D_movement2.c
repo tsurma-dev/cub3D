@@ -12,6 +12,36 @@
 
 #include "../includes/cub3D.h"
 
+void	handle_turning_keys(t_map *map)
+{
+	if (mlx_is_key_down(map->mlx, MLX_KEY_LEFT))
+	{
+		map->pa -= TURN_SPEED;
+		if (map->pa < 0)
+			map->pa += 2 * PI;
+		update_player_direction(map);
+	}
+	if (mlx_is_key_down(map->mlx, MLX_KEY_RIGHT))
+	{
+		map->pa += TURN_SPEED;
+		if (map->pa > 2 * PI)
+			map->pa -= 2 * PI;
+		update_player_direction(map);
+	}
+}
+
+void	keyhook(void *param)
+{
+	t_map	*map;
+
+	map = (t_map *)param;
+	handle_movement_keys(map);
+	handle_turning_keys(map);
+	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width) * 4);
+	raycaster(map);
+	draw_player(map);
+}
+
 void	update_view(t_map *map, double delta_x, double delta_y)
 {
 	const double	damping_factor = 0.002;

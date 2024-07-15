@@ -85,6 +85,20 @@ typedef struct cub3D_map
     double pitch;
 }	t_map;
 
+typedef struct player_movement
+{
+    double f_move_speed;
+    double lat_move_speed;
+    double forward_px;
+    double forward_py;
+    double sdways_px;
+    double sdways_py;
+    int forward_map_x;
+    int forward_map_y;
+    int sdways_map_x;
+    int sdways_map_y;
+}   t_player_movement;
+
 typedef struct cub3D_ray
 {
 	mlx_texture_t *tex;
@@ -124,6 +138,7 @@ void	fill_background(t_map *map);
 // void	fill_test(t_map *map);
 // void	fill_wall(t_map *map);
 void	keyhook(void *param);
+void	handle_movement_keys(t_map *map);
 void	keyhook2(mlx_key_data_t keydata, void *ma);
 void mouse_hook(double xpos, double ypos, void *param);
 // void	draw_map(t_map *map);
