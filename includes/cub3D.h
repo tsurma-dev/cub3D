@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 14:21:10 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:41:49 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,46 +129,47 @@ typedef struct cub3D_ray
 	int				y;
 }					t_ray;
 
+//Parsing
 int					parser(char *path, t_map *map);
 void				parser_exit(char **file, t_map *map, int err_nr,
 						const char *message);
+void				check_ext(const char *filename);
+int					parse_map(t_map *map, char **lines);
+int					parse_line(t_map *map, char *line);
+char				**ft_pointjoin(char **dest, char *src);
+int					check_valid_map(t_map *map, int player_x, int player_y);
+int					valid_map(int *map, int width, int height);
+int					valid_char(char c);
+int					content_check(t_map *map, int player_x, int player_y);
+void				flood_fill(int x, int y, int *tiles, t_map *map);
+mlx_texture_t		*path_extractor(char *line);
 int					rgb_extractor(char *line);
+int					get_map_dimensions(t_map *map, char **lines);
+//mlx
 void				window(t_map *map);
-void				fill_background(t_map *map);
-void				keyhook(void *param);
-void				handle_movement_keys(t_map *map);
-void				keyhook2(mlx_key_data_t keydata, void *ma);
+void				load_images_tex(t_map *map);
+void				delete_tex_img(t_map *map);
+void				reverse_texture(mlx_texture_t *tex);
 void				mouse_hook(double xpos, double ypos, void *param);
+void				keyhook(void *param);
+void				keyhook2(mlx_key_data_t keydata, void *ma);
+void				fill_background(t_map *map);
+void				handle_movement_keys(t_map *map);
+void				update_player_direction(t_map *map);
+void				initiate_cub3dmap(t_map *map);
+void				draw_map(t_map *map);
+void				draw_player(t_map *map);
+//raycasting
 void				raycaster(t_map *map);
 void				update_player_position(t_map *map, int d, int sideways);
 unsigned int		tex_to_rgb(mlx_texture_t *tex, int x, int y);
-void				reverse_texture(mlx_texture_t *tex);
 mlx_texture_t		*select_texture(t_map *map, int side, double rdx,
 						double rdy);
+void				find_tex_hit(t_ray *r, float px, float py);
 void				find_coll(t_map *map, t_ray *r);
 void				draw_column(t_map *map, t_ray *r);
 void				set_step_dist(t_map *map, t_ray *r);
 void				set_draw_pos(t_ray *r);
-void				find_tex_hit(t_ray *r, float px, float py);
-char				**ft_pointjoin(char **dest, char *src);
-int					parse_line(t_map *map, char *line);
-int					parse_map(t_map *map, char **lines);
-mlx_texture_t		*path_extractor(char *line);
-int					get_map_dimensions(t_map *map, char **lines);
-void				check_ext(const char *filename);
-void				update_player_direction(t_map *map);
-void				initiate_cub3dmap(t_map *map);
 int					find_player_position(t_map *map, int *player_x,
 						int *player_y);
-void				flood_fill(int x, int y, int *tiles, t_map *map);
-int					check_valid_map(t_map *map, int player_x, int player_y);
-int					valid_map(int *map, int width, int height);
-int					content_check(t_map *map, int player_x, int player_y);
-int					valid_char(char c);
-void				draw_map(t_map *map);
-void				draw_player(t_map *map);
-void				load_images_tex(t_map *map);
-void				delete_tex_img(t_map *map);
-
-
 #endif
