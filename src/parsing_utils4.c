@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:50:58 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/15 14:08:06 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:30:28 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	process_map_line(t_map *map, char *line, int *mapj)
 	int		j;
 	char	c;
 
-	j = 0;
-	while (line[j])
+	j = -1;
+	while (line[++j])
 	{
 		c = line[j];
 		if (!valid_char(c))
@@ -58,7 +58,6 @@ int	process_map_line(t_map *map, char *line, int *mapj)
 			return (1);
 		}
 		map->mapp[(*mapj)++] = char_to_int(c);
-		j++;
 	}
 	while (j < map->mapx)
 	{

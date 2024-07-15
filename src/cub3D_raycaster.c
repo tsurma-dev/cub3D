@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 12:47:22 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 15:54:47 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:35:10 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	find_tex_hit(t_ray *r, float px, float py)
 	r->tex_pos = (r->draw_start - SCREEN_HEIGHT / 2 + r->line_height / 2)
 		* r->step;
 }
-
 
 void	set_draw_pos(t_ray *r)
 {

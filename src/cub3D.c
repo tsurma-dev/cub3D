@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 14:22:44 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:35:00 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int argc, char **argv)
 	mlx_key_hook(map.mlx, &keyhook2, (void *)&map);
 	mlx_loop(map.mlx);
 	delete_tex_img(&map);
-	free(map.mapp);
 	mlx_terminate(map.mlx);
 	return (EXIT_SUCCESS);
 }
@@ -72,4 +71,5 @@ void	delete_tex_img(t_map *map)
 	mlx_delete_image(map->mlx, map->p_layer);
 	mlx_delete_image(map->mlx, map->m_layer);
 	mlx_delete_image(map->mlx, map->wall);
+	free(map->mapp);
 }

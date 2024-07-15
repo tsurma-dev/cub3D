@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 17:18:52 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/15 14:08:33 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:34:09 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ int	find_player_position(t_map *map, int *player_x, int *player_y)
 		while (x < map->mapx)
 		{
 			if (map->mapp[y * map->mapx + x] == N || map->mapp[y * map->mapx
-				+ x] == S || map->mapp[y * map->mapx + x] == E || map->mapp[y
-				* map->mapx + x] == W)
+					+ x] == S || map->mapp[y * map->mapx + x] == E
+				|| map->mapp[y * map->mapx + x] == W)
 			{
 				*player_x = x;
 				*player_y = y;

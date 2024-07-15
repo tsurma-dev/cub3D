@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:44:19 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 14:23:29 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:34:17 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	draw_map(t_map *map)
 	map->miny = SCREEN_HEIGHT / 2 - (map->cube * map->mapy / 2) - (SCREEN_HEIGHT
 			* 0.1);
 	y = -1;
+	map->wall->enabled = 0;
+	map->m_layer->enabled = 0;
 	while (++y < map->mapy)
 	{
 		x = -1;
@@ -48,12 +50,14 @@ void	draw_player(t_map *map)
 		prev_y = 10;
 	mlx_put_pixel(map->m_layer, prev_x, prev_y, 0);
 	mlx_put_pixel(map->m_layer, prev_x - 1, prev_y, 0);
-	mlx_put_pixel(map->m_layer, prev_x, prev_y - 1, 0);
 	mlx_put_pixel(map->m_layer, prev_x + 1, prev_y, 0);
+	mlx_put_pixel(map->m_layer, prev_x, prev_y - 1, 0);
+	mlx_put_pixel(map->m_layer, prev_x, prev_y + 1, 0);
 	prev_x = map->px * map->cube + map->minx;
 	prev_y = map->py * map->cube + map->miny;
 	mlx_put_pixel(map->m_layer, prev_x, prev_y, 0xffffff);
 	mlx_put_pixel(map->m_layer, prev_x - 1, prev_y, 0xffffff);
-	mlx_put_pixel(map->m_layer, prev_x, prev_y - 1, 0xffffff);
 	mlx_put_pixel(map->m_layer, prev_x + 1, prev_y, 0xffffff);
+	mlx_put_pixel(map->m_layer, prev_x, prev_y - 1, 0xffffff);
+	mlx_put_pixel(map->m_layer, prev_x, prev_y + 1, 0xffffff);
 }

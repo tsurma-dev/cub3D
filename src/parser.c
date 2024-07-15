@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 14:11:40 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:36:26 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,20 @@ int	read_file(char *path, char ***file)
 
 int	parser(char *path, t_map *map)
 {
-	char	**file = NULL;
+	char	**file;
 	int		i;
 	int		player_x;
 	int		player_y;
 
+	file = NULL;
 	check_ext(path);
 	if (read_file(path, &file) != 0)
 		parser_exit(NULL, map, ENOMEM, "Could not join lines");
 	i = -1;
 	while (file[++i] && parse_line(map, file[i]) != 3)
 		printf("Parsing line %d: %s\n", i, file[i]);
-	printf("Map data found, parsing map\n");
 	if (parse_map(map, &file[i]) != 0)
 		parser_exit(file, map, 1, "Could not parse map");
-	printf("Parsed map successfully.\n");
 	player_x = -1;
 	player_y = -1;
 	if (!find_player_position(map, &player_x, &player_y))
@@ -102,7 +101,6 @@ int	parse_line(t_map *map, char *line)
 	else
 		return (1);
 	return (0);
-
 }
 
 mlx_texture_t	*path_extractor(char *line)
