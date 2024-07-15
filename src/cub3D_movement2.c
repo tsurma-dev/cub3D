@@ -37,7 +37,8 @@ void	keyhook(void *param)
 	map = (t_map *)param;
 	handle_movement_keys(map);
 	handle_turning_keys(map);
-	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width) * 4);
+	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width)
+		* 4);
 	raycaster(map);
 	draw_player(map);
 }
