@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_movement2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 15:56:45 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/11 15:56:47 by olobresh         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:21:54 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,24 @@ void	keyhook(void *param)
 	map = (t_map *)param;
 	handle_movement_keys(map);
 	handle_turning_keys(map);
-	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width) * 4);
+	ft_bzero(map->p_layer->pixels, (map->p_layer->height * map->p_layer->width)
+		* 4);
 	raycaster(map);
 	draw_player(map);
+}
+
+void	keyhook2(mlx_key_data_t keydata, void *ma)
+{
+	t_map	*map;
+
+	map = (t_map *)ma;
+	if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS)
+	{
+		map->wall->enabled ^= 1;
+		map->m_layer->enabled ^= 1;
+	}
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(map->mlx);
 }
 
 void	update_view(t_map *map, double delta_x, double delta_y)

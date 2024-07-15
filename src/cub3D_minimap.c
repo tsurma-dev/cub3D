@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:44:19 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/12 17:23:00 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 14:23:29 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	draw_player(t_map *map)
 	mlx_put_pixel(map->m_layer, prev_x + 1, prev_y, 0);
 	prev_x = map->px * map->cube + map->minx;
 	prev_y = map->py * map->cube + map->miny;
-	// ((int *)map->m_layer)[prev_y * map->mapx + prev_x] = 255;
 	mlx_put_pixel(map->m_layer, prev_x, prev_y, 0xffffff);
 	mlx_put_pixel(map->m_layer, prev_x - 1, prev_y, 0xffffff);
 	mlx_put_pixel(map->m_layer, prev_x, prev_y - 1, 0xffffff);
