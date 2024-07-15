@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 14:41:49 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/15 15:22:15 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <float.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -70,9 +69,13 @@ typedef struct cub3D_map
 	mlx_image_t		*bg;
 	mlx_image_t		*p_layer;
 	mlx_image_t		*m_layer;
-	double px, py, pa;
-	double pdx, pdy;
-	double plane_x, plane_y;
+	double			px;
+	double			py;
+	double			pa;
+	double			pdx;
+	double			pdy;
+	double			plane_x;
+	double			plane_y;
 	int				mapx;
 	int				minx;
 	int				miny;
