@@ -19,24 +19,12 @@ int	check_valid_map(t_map *map, int player_x, int player_y)
 		printf("Error\nMap has invalid chars or mult/no player start pos\n");
 		return (0);
 	}
-	if (!content_check(map, player_x, player_y))
+	if (!check_player_surroundings(map, player_x, player_y))
 	{
 		printf("Error\nMap contains unreachable areas\n");
 		return (0);
 	}
 	return (1);
-}
-
-void	flood_fill(int x, int y, int *tiles, t_map *map)
-{
-	if (x < 0 || y < 0 || y >= map->mapy || x >= map->mapx || tiles[y
-			* map->mapx + x] == WALL || tiles[y * map->mapx + x] == -2)
-		return ;
-	tiles[y * map->mapx + x] = -2;
-	flood_fill(x + 1, y, tiles, map);
-	flood_fill(x - 1, y, tiles, map);
-	flood_fill(x, y + 1, tiles, map);
-	flood_fill(x, y - 1, tiles, map);
 }
 
 int	process_rgb_component(char *line, int *i)

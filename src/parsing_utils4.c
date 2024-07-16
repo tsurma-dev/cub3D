@@ -112,7 +112,8 @@ int parse_map(t_map *map, char **lines)
     return 0;
 }
 
-int get_map_dimensions(t_map *map, char **lines) {
+int get_map_dimensions(t_map *map, char **lines)
+{
     int x;
 	int y;
     char *line;
