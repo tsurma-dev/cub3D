@@ -43,84 +43,98 @@ void	trim_whitespace(char **line)
 	end[1] = '\0';
 }
 
-int	process_map_line(t_map *map, char *line, int *mapj)
+int process_map_line(t_map *map, char *line, int y)
 {
-	int		j;
-	char	c;
+    int j = 0;
+    char c;
+    int line_length;
+    int boundary_error;
 
-	j = -1;
-	while (line[++j])
+    line_length = strlen(line);
+    boundary_error = 0;
+    while (j < line_length)
 	{
-		c = line[j];
-		if (!valid_char(c))
+        c = line[j];
+        if (!valid_char(c))
 		{
-			printf("Error\nUnexpected character '%c' in map\n", c);
-			return (1);
-		}
-		map->mapp[(*mapj)++] = char_to_int(c);
-	}
-	while (j < map->mapx)
+            printf("Error: Unexpected character '%c' at position %d\n", c, j);
+            return 1;
+        }
+        map->mapp[y * map->mapx + j] = char_to_int(c);
+        if ((y == 0 || y == map->mapy - 1 || j == 0 || j == line_length - 1) && char_to_int(c) == FLOOR)
+		{
+            boundary_error = 1;
+        }
+        j++;
+    }
+    if (boundary_error)
 	{
-		if (*mapj >= map->mapx * map->mapy)
-		{
-			printf("Error\nIndex out of bounds at mapj=%d\n", *mapj);
-			return (1);
-		}
-		map->mapp[(*mapj)++] = NOTHING;
-		j++;
-	}
-	return (0);
+        printf("Error: '0' found at border.\n");
+        return 1;
+    }
+    return 0;
 }
 
-int	parse_map(t_map *map, char **lines)
-{
-	int		i;
-	int		mapj;
-	char	*line;
 
-	if (get_map_dimensions(map, lines) == -1)
-	{
-		printf("Error\nCould not get map dimensions\n");
-		return (-1);
-	}
-	map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
-	if (!map->mapp)
-		return (ENOMEM);
+int parse_map(t_map *map, char **lines)
+{
+    int i;
+    char *line;
+
 	i = 0;
-	mapj = 0;
-	while (lines[i])
+    if (get_map_dimensions(map, lines) == -1)
 	{
-		line = lines[i];
-		if (process_map_line(map, line, &mapj) != 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	get_map_dimensions(t_map *map, char **lines)
-{
-	int		x;
-	int		y;
-	char	*line;
-
-	map->mapx = 0;
-	map->mapy = 0;
-	y = 0;
-	while (lines[y])
+        printf("Error\nCould not get map dimensions\n");
+        return (-1);
+    }
+    map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
+    if (!map->mapp)
+        return (ENOMEM);
+    while (lines[i])
 	{
-		line = lines[y];
-		trim_whitespace(&line);
-		if (line[0] == '1' || line[0] == ' ')
+        line = lines[i];
+        if (process_map_line(map, line, i) != 0)
+            return 1;
+        i++;
+    }
+    int y = 0;
+    while (y < map->mapy)
+	{
+        int line_length = strlen(lines[y]);
+        int j = line_length;
+        while (j < map->mapx)
 		{
-			x = ft_strlen(line);
-			if (x > map->mapx)
-				map->mapx = x;
-			map->mapy++;
-		}
-		y++;
-	}
-	if (map->mapx > 0 && map->mapy > 0)
-		return (0);
-	return (-1);
+            map->mapp[y * map->mapx + j] = WALL;
+            j++;
+        }
+        y++;
+    }
+    return 0;
 }
+
+int get_map_dimensions(t_map *map, char **lines) {
+    int x;
+	int y;
+    char *line;
+
+    map->mapx = 0;
+    map->mapy = 0;
+    y = 0;
+    while (lines[y])
+	{
+        line = lines[y];
+        trim_whitespace(&line);
+        x = strlen(line);
+        if (x > map->mapx) map->mapx = x;
+			map->mapy++;
+        y++;
+    }
+    if (map->mapx > 0 && map->mapy > 0)
+        return 0;
+    return -1;
+}
+
+
+
+
+

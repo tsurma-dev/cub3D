@@ -21,7 +21,7 @@ int	check_valid_map(t_map *map, int player_x, int player_y)
 	}
 	if (!content_check(map, player_x, player_y))
 	{
-		printf("Error\nMap is not enclosed fully/contains unreachable areas\n");
+		printf("Error\nMap contains unreachable areas\n");
 		return (0);
 	}
 	return (1);
