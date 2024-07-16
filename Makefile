@@ -6,7 +6,7 @@
 #    By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/06/28 15:37:07 by tsurma            #+#    #+#              #
-#    Updated: 2024/07/12 13:20:51 by tsurma           ###   ########.fr        #
+#    Updated: 2024/07/16 14:18:29 by tsurma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = src/cub3D.c \
 	  src/cub3D_movement.c src/cub3D_mlx_utils.c src/cub3D_raycaster.c\
 	  src/cub3D_raycaster2.c src/parsing_utils3.c src/parsing_utils4.c\
 	  src/cub3D_utils.c src/cub3D_minimap.c src/cub3D_movement2.c\
+	  src/cub3D_borders.c
 
 OBJ = $(SRC:.c=.o)
 

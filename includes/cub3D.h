@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/15 15:22:15 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/16 14:18:12 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ typedef struct cub3D_ray
 	int				y;
 }					t_ray;
 
-//Parsing
+// Parsing
 int					parser(char *path, t_map *map);
 void				parser_exit(char **file, t_map *map, int err_nr,
 						const char *message);
@@ -148,7 +148,7 @@ void				flood_fill(int x, int y, int *tiles, t_map *map);
 mlx_texture_t		*path_extractor(char *line);
 int					rgb_extractor(char *line);
 int					get_map_dimensions(t_map *map, char **lines);
-//mlx
+// mlx
 void				window(t_map *map);
 void				load_images_tex(t_map *map);
 void				delete_tex_img(t_map *map);
@@ -162,7 +162,7 @@ void				update_player_direction(t_map *map);
 void				initiate_cub3dmap(t_map *map);
 void				draw_map(t_map *map);
 void				draw_player(t_map *map);
-//raycasting
+// raycasting
 void				raycaster(t_map *map);
 void				update_player_position(t_map *map, int d, int sideways);
 unsigned int		tex_to_rgb(mlx_texture_t *tex, int x, int y);
@@ -175,4 +175,10 @@ void				set_step_dist(t_map *map, t_ray *r);
 void				set_draw_pos(t_ray *r);
 int					find_player_position(t_map *map, int *player_x,
 						int *player_y);
+int					borders(char **map);
+int					crawler(char **map, int x, int y);
+int					ft_is_edge(char **map, int x, int y);
+int					ft_strchr_i(const char *s, int c);
+int					ft_strrchr_i(const char *s, int c);
+
 #endif
