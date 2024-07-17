@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_raycaster2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 15:56:25 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/11 15:56:28 by olobresh         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:11:39 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y)
 	int	rgba;
 	int	*array;
 
+	if (!tex)
+		return (0);
 	x = tex->width - x - 1;
 	array = (int *)tex->pixels;
 	rgba = array[y * (tex->width) + x];
@@ -66,6 +68,8 @@ void	reverse_texture(mlx_texture_t *tex)
 	int	i;
 	int	size;
 
+	if (!tex)
+		return ;
 	size = tex->height * tex->width * 4;
 	i = 0;
 	while (i < size)

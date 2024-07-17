@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 15:25:38 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/16 14:23:33 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 12:18:32 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ int	borders(char **map)
 			if (map[y][x] == '2' || map[y][x] == '3')
 				map[y][x] = '1';
 	}
-	// y = -1;
-	// while (map[++y])
-	// 	printf("%s\n", map[y]);
 	return (ret);
 }
 
@@ -46,19 +43,22 @@ int	crawler(char **map, int x, int y)
 		i = 1;
 	}
 	map[y][x] = '2';
-	if ((map[y][x + 1] == '1' || map[y][x + 1] == '3') && ft_is_edge(map, x + 1, y) == TRUE)
+	if ((map[y][x + 1] == '1' || map[y][x + 1] == '3') && ft_is_edge(map, x + 1,
+			y) == TRUE)
 		crawler(map, x + 1, y);
-	if (map[y + 1] && x <= (int)ft_strlen(map[y + 1]) && (map[y + 1][x] == '1' || map[y + 1][x] == '3') && ft_is_edge(map, x, y + 1) == TRUE)
+	if (map[y + 1] && x <= (int)ft_strlen(map[y + 1]) && (map[y + 1][x] == '1'
+		|| map[y + 1][x] == '3') && ft_is_edge(map, x, y + 1) == TRUE)
 		crawler(map, x, y + 1);
-	if (x > 0 && (map[y][x - 1] == '1' || map[y][x - 1] == '3') && ft_is_edge(map, x - 1, y) == TRUE)
+	if (x > 0 && (map[y][x - 1] == '1' || map[y][x - 1] == '3')
+		&& ft_is_edge(map, x - 1, y) == TRUE)
 		crawler(map, x - 1, y);
-	if (y > 0 && x <= (int)ft_strlen(map[y - 1]) && (map[y - 1][x] == '1' || map[y - 1][x] == '3') && ft_is_edge(map, x, y - 1) == TRUE)
+	if (y > 0 && x <= (int)ft_strlen(map[y - 1]) && (map[y - 1][x] == '1'
+		|| map[y - 1][x] == '3') && ft_is_edge(map, x, y - 1) == TRUE)
 		crawler(map, x, y - 1);
 	if (i == 1)
 		return (0);
 	return (-1);
 }
-
 
 int	ft_is_edge(char **map, int x, int y)
 {
@@ -68,9 +68,11 @@ int	ft_is_edge(char **map, int x, int y)
 		return (TRUE);
 	if (map[y][x + 1] == '\0' || map[y][x + 1] == '\n' || map[y][x + 1] == ' ')
 		return (TRUE);
-	if (map[y][x - 1] == ' ' )
+	if (map[y][x - 1] == ' ')
 		return (TRUE);
-	if (map[y + 1] && ((x >= ft_strrchr_i(map[y + 1], '1') && (x >= ft_strrchr_i(map[y + 1], '2'))) || map[y + 1][x] == ' '))
+	if (map[y + 1] && ((x >= ft_strrchr_i(map[y + 1], '1')
+				&& (x >= ft_strrchr_i(map[y + 1], '2'))) || map[y
+				+ 1][x] == ' '))
 		return (TRUE);
 	if (map[y + 1] && map[y + 1][x - 1] == ' ')
 		return (TRUE);
@@ -81,9 +83,7 @@ int	ft_is_edge(char **map, int x, int y)
 	if (map[y - 1][x - 1] == ' ')
 		return (TRUE);
 	return (FALSE);
-
 }
-
 
 int	ft_strchr_i(const char *s, int c)
 {

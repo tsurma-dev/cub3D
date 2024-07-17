@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/16 14:18:12 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 13:18:59 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,14 @@ char				**ft_pointjoin(char **dest, char *src);
 int					check_valid_map(t_map *map, int player_x, int player_y);
 int					valid_map(int *map, int width, int height);
 int					valid_char(char c);
-int					content_check(t_map *map, int player_x, int player_y);
-void				flood_fill(int x, int y, int *tiles, t_map *map);
 mlx_texture_t		*path_extractor(char *line);
 int					rgb_extractor(char *line);
 int					get_map_dimensions(t_map *map, char **lines);
+int					check_player_surroundings(t_map *map, int player_x,
+						int player_y);
+int					process_map_lines(t_map *map, char **lines);
+void				trim_whitespace(char **line);
+int					process_map_line(t_map *map, char *line, int y);
 // mlx
 void				window(t_map *map);
 void				load_images_tex(t_map *map);

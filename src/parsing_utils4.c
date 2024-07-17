@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 17:50:58 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/16 14:21:00 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 13:18:36 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ void	trim_whitespace(char **line)
 	end[1] = '\0';
 }
 
+int	ret_print(int i, char *mess)
+{
+	printf("%s\n", mess);
+	return (i);
+}
+
 int	process_map_line(t_map *map, char *line, int y)
 {
 	int		j;
@@ -50,10 +56,10 @@ int	process_map_line(t_map *map, char *line, int y)
 	int		line_length;
 	int		boundary_error;
 
-	j = 0;
-	line_length = strlen(line);
+	j = -1;
+	line_length = ft_strlen(line);
 	boundary_error = 0;
-	while (j < line_length)
+	while (++j < line_length)
 	{
 		c = line[j];
 		if (!valid_char(c))
@@ -64,82 +70,24 @@ int	process_map_line(t_map *map, char *line, int y)
 		map->mapp[y * map->mapx + j] = char_to_int(c);
 		if ((y == 0 || y == map->mapy - 1 || j == 0 || j == line_length - 1)
 			&& char_to_int(c) == FLOOR)
-		{
 			boundary_error = 1;
-		}
-		j++;
 	}
 	if (boundary_error)
-	{
-		printf("Error: '0' found at border.\n");
-		return (1);
-	}
+		return (ret_print(1, "Error\n '0' found at border.\n"));
 	return (0);
 }
 
 int	parse_map(t_map *map, char **lines)
 {
-	int		i;
-	char	*line;
-	int		y;
-	int		line_length;
-	int		j;
-
-	i = 0;
 	if (get_map_dimensions(map, lines) == -1)
 	{
 		printf("Error\nCould not get map dimensions\n");
 		return (-1);
 	}
 	if (borders(lines) == -1)
-		printf("WROOOOOONG\n");
-	else
-		printf("RIIIIIGHT\n");
+		return (ret_print(1, "Error\nMap not enclosed.\n"));
 	map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
 	if (!map->mapp)
 		return (ENOMEM);
-	while (lines[i])
-	{
-		line = lines[i];
-		if (process_map_line(map, line, i) != 0)
-			return (1);
-		i++;
-	}
-	y = 0;
-	while (y < map->mapy)
-	{
-		line_length = strlen(lines[y]);
-		j = line_length;
-		while (j < map->mapx)
-		{
-			map->mapp[y * map->mapx + j] = WALL;
-			j++;
-		}
-		y++;
-	}
-	return (0);
-}
-
-int	get_map_dimensions(t_map *map, char **lines)
-{
-	int		x;
-	int		y;
-	char	*line;
-
-	map->mapx = 0;
-	map->mapy = 0;
-	y = 0;
-	while (lines[y])
-	{
-		line = lines[y];
-		trim_whitespace(&line);
-		x = strlen(line);
-		if (x > map->mapx)
-			map->mapx = x;
-		map->mapy++;
-		y++;
-	}
-	if (map->mapx > 0 && map->mapy > 0)
-		return (0);
-	return (-1);
+	return (process_map_lines(map, lines));
 }
