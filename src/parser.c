@@ -93,22 +93,21 @@ void	parser_exit(char **file, t_map *map, int err_nr, const char *message)
 	exit(err_nr);
 }
 
-int parse_line(t_map *map, char *line)
+int	parse_line(t_map *map, char *line)
 {
-    size_t len;
-    int result;
+	size_t	len;
+	int		result;
 
-    len = ft_strlen(line);
-    if (len == 0 || line[0] == '\n' || line[0] == '\0')
-        return EXIT_SUCCESS;
-    result = parse_texture(map, line, len);
-    if (result != EXIT_FAILURE)
-        return result;
-    result = parse_color(map, line, len);
-    if (result != EXIT_FAILURE)
-        return result;
-    if (ft_strnstr(line, "1", len) != NULL)
-        return 3;
-    return 2;
+	len = ft_strlen(line);
+	if (len == 0 || line[0] == '\n' || line[0] == '\0')
+		return (EXIT_SUCCESS);
+	result = parse_texture(map, line, len);
+	if (result != EXIT_FAILURE)
+		return (result);
+	result = parse_color(map, line, len);
+	if (result != EXIT_FAILURE)
+		return (result);
+	if (ft_strnstr(line, "1", len) != NULL)
+		return (3);
+	return (2);
 }
-
