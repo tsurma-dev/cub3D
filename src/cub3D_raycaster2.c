@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 15:56:25 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/17 13:11:39 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 16:25:06 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	find_coll(t_map *map, t_ray *r)
 mlx_texture_t	*select_texture(t_map *map, int side, double rdx, double rdy)
 {
 	if (side == 1 && rdy < 0)
-		return (map->no_t);
-	else if (side == 1)
 		return (map->so_t);
+	else if (side == 1)
+		return (map->no_t);
 	if (rdx < 0)
-		return (map->we_t);
-	return (map->ea_t);
+		return (map->ea_t);
+	return (map->we_t);
 }
 
 unsigned int	tex_to_rgb(mlx_texture_t *tex, int x, int y)
