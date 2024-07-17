@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 13:18:59 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 13:55:57 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,16 +144,16 @@ int					check_valid_map(t_map *map, int player_x, int player_y);
 int					valid_map(int *map, int width, int height);
 int					valid_char(char c);
 mlx_texture_t		*path_extractor(char *line);
-int					rgb_extractor(char *line);
 int					get_map_dimensions(t_map *map, char **lines);
 int					check_player_surroundings(t_map *map, int player_x,
 						int player_y);
 int					process_map_lines(t_map *map, char **lines);
 void				trim_whitespace(char **line);
 int					process_map_line(t_map *map, char *line, int y);
+int					rgb_extractor(char *line, int *rgb);
 // mlx
 void				window(t_map *map);
-void				load_images_tex(t_map *map);
+int					load_images_tex(t_map *map);
 void				delete_tex_img(t_map *map);
 void				reverse_texture(mlx_texture_t *tex);
 void				mouse_hook(double xpos, double ypos, void *param);
@@ -165,6 +165,8 @@ void				update_player_direction(t_map *map);
 void				initiate_cub3dmap(t_map *map);
 void				draw_map(t_map *map);
 void				draw_player(t_map *map);
+int					ret_print(int i, char *mess);
+
 // raycasting
 void				raycaster(t_map *map);
 void				update_player_position(t_map *map, int d, int sideways);

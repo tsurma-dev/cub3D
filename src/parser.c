@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 12:48:03 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 14:11:18 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	read_file(char *path, char ***file)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		printf("Read line: %s\n", line);
 		*file = ft_pointjoin(*file, line);
 		if (!(*file))
 		{
@@ -35,6 +34,21 @@ int	read_file(char *path, char ***file)
 	}
 	close(fd);
 	return (0);
+}
+
+void	parser_2(t_map *map, int *i, char **file)
+{
+	int	j;
+
+	j = 0;
+	while (file[++*i])
+	{
+		j = parse_line(map, file[*i]);
+		if (j == 3)
+			break ;
+		if (j == EXIT_FAILURE)
+			parser_exit(file, map, 1, "RGB out of range");
+	}
 }
 
 int	parser(char *path, t_map *map)
@@ -49,20 +63,16 @@ int	parser(char *path, t_map *map)
 	if (read_file(path, &file) != 0)
 		parser_exit(NULL, map, ENOMEM, "Could not join lines");
 	i = -1;
-	while (file[++i] && parse_line(map, file[i]) != 3)
-		printf("Parsing line %d: %s\n", i, file[i]);
+	parser_2(map, &i, file);
 	if (parse_map(map, &file[i]) != 0)
 		parser_exit(file, map, 1, "Could not parse map");
 	player_x = -1;
 	player_y = -1;
 	if (!find_player_position(map, &player_x, &player_y))
 		parser_exit(file, map, EINVAL, "No player start position found");
-	printf("Player position found at (%d, %d).\n", player_x, player_y);
 	if (!check_valid_map(map, player_x, player_y))
 		parser_exit(file, map, EINVAL, "Map validation failed");
 	ft_free_matrix(file);
-	printf("Map validation successful.\n");
-	printf("c = %d\nf = %d\n", map->colour_c, map->colour_f);
 	return (0);
 }
 
@@ -93,26 +103,18 @@ int	parse_line(t_map *map, char *line)
 	else if (ft_strnstr(line, "WE", len) != NULL)
 		map->we_t = path_extractor(line);
 	else if (ft_strnstr(line, "C", len) != NULL)
-		map->colour_c = (rgb_extractor(line));
+	{
+		if (rgb_extractor(line, &map->colour_c) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
 	else if (ft_strnstr(line, "F", len) != NULL)
-		map->colour_f = (rgb_extractor(line));
+	{
+		if (rgb_extractor(line, &map->colour_f) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
 	else if (ft_strnstr(line, "1", len) != NULL)
 		return (3);
-	else
-		return (1);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
-mlx_texture_t	*path_extractor(char *line)
-{
-	size_t	i;
 
-	line = ft_strnstr(line, "./", ft_strlen(line));
-	if (!line)
-		return (NULL);
-	i = -1;
-	while (line[++i] && ft_isspace(line[i]) != 1)
-		;
-	line[i] = '\0';
-	return (mlx_load_png(line));
-}

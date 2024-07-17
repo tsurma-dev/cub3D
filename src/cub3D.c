@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 13:10:45 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 14:09:19 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,18 @@ int	main(int argc, char **argv)
 	static t_map	map;
 
 	if (argc != 2)
-	{
-		printf("Usage: %s <map_file.cub>\n", argv[0]);
-		return (EXIT_FAILURE);
-	}
+		return (ret_print(1, "Usage: ./cub3D <map_file.cub>\n"));
 	initiate_cub3dmap(&map);
 	if (parser(argv[1], &map) != 0)
-	{
-		printf("Error\nFailed to parse map file.\n");
-		return (EXIT_FAILURE);
-	}
+		return (ret_print(1, "Error\nFailed to parse map file.\n"));
 	window(&map);
-	load_images_tex(&map);
+	if (load_images_tex(&map) == EXIT_FAILURE)
+	{
+		delete_tex_img(&map);
+		mlx_terminate(map.mlx);
+		return (ret_print(1, "Error\nCould not load all images."));
+	}
 	update_player_direction(&map);
-	printf("Player direction vectors: pdx = %f, pdy = %f\n", map.pdx, map.pdy);
 	draw_map(&map);
 	mlx_cursor_hook(map.mlx, mouse_hook, &map);
 	mlx_loop_hook(map.mlx, &keyhook, &map);
@@ -41,10 +39,12 @@ int	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	load_images_tex(t_map *map)
+int	load_images_tex(t_map *map)
 {
 	mlx_texture_t	*tex;
 
+	if (!map->no_t || !map->so_t || !map->ea_t || !map->we_t)
+		return (EXIT_FAILURE);
 	map->bg = mlx_new_image(map->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	map->p_layer = mlx_new_image(map->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	map->m_layer = mlx_new_image(map->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -59,17 +59,27 @@ void	load_images_tex(t_map *map)
 	tex = mlx_load_png("./textures/mini.png");
 	map->wall = mlx_texture_to_image(map->mlx, tex);
 	mlx_delete_texture(tex);
+	return (EXIT_SUCCESS);
 }
 
 void	delete_tex_img(t_map *map)
 {
-	mlx_delete_texture(map->no_t);
-	mlx_delete_texture(map->so_t);
-	mlx_delete_texture(map->we_t);
-	mlx_delete_texture(map->ea_t);
-	mlx_delete_image(map->mlx, map->bg);
-	mlx_delete_image(map->mlx, map->p_layer);
-	mlx_delete_image(map->mlx, map->m_layer);
-	mlx_delete_image(map->mlx, map->wall);
-	free(map->mapp);
+	if (map->no_t != NULL)
+		mlx_delete_texture(map->no_t);
+	if (map->so_t != NULL)
+		mlx_delete_texture(map->so_t);
+	if (map->we_t != NULL)
+		mlx_delete_texture(map->we_t);
+	if (map->ea_t != NULL)
+		mlx_delete_texture(map->ea_t);
+	if (map->bg != NULL)
+		mlx_delete_image(map->mlx, map->bg);
+	if (map->p_layer != NULL)
+		mlx_delete_image(map->mlx, map->p_layer);
+	if (map->m_layer != NULL)
+		mlx_delete_image(map->mlx, map->m_layer);
+	if (map->wall != NULL)
+		mlx_delete_image(map->mlx, map->wall);
+	if (map->mapp != NULL)
+		free(map->mapp);
 }

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 10:53:53 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/08 11:20:19 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 14:09:11 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,18 @@ char	**ft_pointjoin(char **dest, char *src)
 	}
 	free(dest);
 	return (ret);
+}
+
+mlx_texture_t	*path_extractor(char *line)
+{
+	size_t	i;
+
+	line = ft_strnstr(line, "./", ft_strlen(line));
+	if (!line)
+		return (NULL);
+	i = -1;
+	while (line[++i] && ft_isspace(line[i]) != 1)
+		;
+	line[i] = '\0';
+	return (mlx_load_png(line));
 }
