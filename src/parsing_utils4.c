@@ -45,13 +45,14 @@ void	trim_whitespace(char **line)
 
 int process_map_line(t_map *map, char *line, int y)
 {
-    int j = 0;
+    int j;
     char c;
-    int line_length;
+    int line_length = ft_strlen(line);
     int boundary_error;
 
-    line_length = strlen(line);
-    boundary_error = 0;
+	j = 0;
+	line_length = ft_strlen(line);
+	boundary_error = 0;
     while (j < line_length)
 	{
         c = line[j];
@@ -75,13 +76,66 @@ int process_map_line(t_map *map, char *line, int y)
     return 0;
 }
 
+int validate_map_start(t_map *map, char **lines)
+{
+    int y;
+	int x;
+	int first_char_index;
+
+    y = 0;
+    while (y < map->mapy)
+	{
+        x = 0;
+        first_char_index = -1;
+        while (x < (int)ft_strlen(lines[y]))
+		{
+            if (!ft_isspace(lines[y][x]))
+			{
+                first_char_index = x;
+                break;
+            }
+            x++;
+        }
+        if (first_char_index != -1 && lines[y][first_char_index] == '0')
+		{
+            printf("Error: Line %d starts improperly with a '0'.\n", y);
+            return 0;
+        }
+        y++;
+    }
+    x = 0;
+    while (x < map->mapx)
+	{
+        int first_non_space_y;
+        first_non_space_y = -1;
+        y = 0;
+        while (y < map->mapy)
+		{
+            if (x < (int)ft_strlen(lines[y]) && !ft_isspace(lines[y][x]))
+			{
+                first_non_space_y = y;
+                break;
+            }
+            y++;
+        }
+        if (first_non_space_y != -1 && lines[first_non_space_y][x] == '0')
+		{
+            printf("Error: Column %d starts improperly with a '0'.\n", x);
+            return 0;
+        }
+        x++;
+    }
+    return 1;
+}
+
 
 int parse_map(t_map *map, char **lines)
 {
-    int i;
-    char *line;
+    int result;
+    int y;
+    int line_length;
+    int j;
 
-	i = 0;
     if (get_map_dimensions(map, lines) == -1)
 	{
         printf("Error\nCould not get map dimensions\n");
@@ -90,18 +144,25 @@ int parse_map(t_map *map, char **lines)
     map->mapp = malloc(sizeof(int) * (map->mapx * map->mapy));
     if (!map->mapp)
         return (ENOMEM);
-    while (lines[i])
+    int i;
+    i = 0;
+    while (i < map->mapy)
 	{
-        line = lines[i];
-        if (process_map_line(map, line, i) != 0)
+        result = process_map_line(map, lines[i], i);
+        if (result != 0)
             return 1;
         i++;
     }
-    int y = 0;
+    result = validate_map_start(map, lines);
+    if (!result)
+	{
+        return 1;
+    }
+    y = 0;
     while (y < map->mapy)
 	{
-        int line_length = strlen(lines[y]);
-        int j = line_length;
+        line_length = ft_strlen(lines[y]);
+        j = line_length;
         while (j < map->mapx)
 		{
             map->mapp[y * map->mapx + j] = WALL;
@@ -111,6 +172,7 @@ int parse_map(t_map *map, char **lines)
     }
     return 0;
 }
+
 
 int get_map_dimensions(t_map *map, char **lines)
 {
@@ -125,7 +187,7 @@ int get_map_dimensions(t_map *map, char **lines)
 	{
         line = lines[y];
         trim_whitespace(&line);
-        x = strlen(line);
+        x = ft_strlen(line);
         if (x > map->mapx) map->mapx = x;
 			map->mapy++;
         y++;
