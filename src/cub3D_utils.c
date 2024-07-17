@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 10:53:53 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 14:09:11 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 16:18:10 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,27 @@ char	**ft_pointjoin(char **dest, char *src)
 	return (ret);
 }
 
-mlx_texture_t	*path_extractor(char *line)
+int	path_extractor(char *line, t_map *map, int ind)
 {
 	size_t	i;
 
+	if ((ind == 0 && map->no_t != NULL) || (ind == 1 && map->so_t != NULL)
+		|| (ind == 2 && map->ea_t != NULL) || (ind == 3 && map->we_t != NULL))
+		return (EXIT_FAILURE);
 	line = ft_strnstr(line, "./", ft_strlen(line));
 	if (!line)
-		return (NULL);
+		return (EXIT_FAILURE);
 	i = -1;
 	while (line[++i] && ft_isspace(line[i]) != 1)
 		;
 	line[i] = '\0';
-	return (mlx_load_png(line));
+	if (ind == 0)
+		map->no_t = mlx_load_png(line);
+	if (ind == 1)
+		map->so_t = mlx_load_png(line);
+	if (ind == 2)
+		map->ea_t = mlx_load_png(line);
+	if (ind == 3)
+		map->we_t = mlx_load_png(line);
+	return (EXIT_SUCCESS);
 }

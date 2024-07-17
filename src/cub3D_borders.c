@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 15:25:38 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 12:18:32 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 14:25:17 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	ft_is_edge(char **map, int x, int y)
 		return (TRUE);
 	if (map[y + 1] && map[y + 1][x + 1] == ' ')
 		return (TRUE);
-	if (map[y - 1][x + 1] == ' ')
+	if (map[y - 1][x + 1] == ' ' || map[y - 1][x + 1] == '\0' || map[y - 1][x
+		+ 1] == '\n')
 		return (TRUE);
 	if (map[y - 1][x - 1] == ' ')
 		return (TRUE);

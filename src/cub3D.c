@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:28 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 14:09:19 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 16:20:21 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 	{
 		delete_tex_img(&map);
 		mlx_terminate(map.mlx);
-		return (ret_print(1, "Error\nCould not load all images."));
+		return (ret_print(1, "\nError\nCould not load all images."));
 	}
 	update_player_direction(&map);
 	draw_map(&map);

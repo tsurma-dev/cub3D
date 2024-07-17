@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:00:02 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 14:11:18 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 16:18:39 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ void	parser_2(t_map *map, int *i, char **file)
 			break ;
 		if (j == EXIT_FAILURE)
 			parser_exit(file, map, 1, "RGB out of range");
+		else if (j == 2)
+			parser_exit(file, map, 1, "Unexpected Character");
+		else if (j == 4)
+			parser_exit(file, map, 1, "Texture assignment Error");
 	}
 }
 
@@ -92,29 +96,44 @@ void	parser_exit(char **file, t_map *map, int err_nr, const char *message)
 int	parse_line(t_map *map, char *line)
 {
 	size_t	len;
+	int		ind;
 
 	len = ft_strlen(line);
+	if (len == 0)
+		return (EXIT_SUCCESS);
+	int i = -1;
+	ind = -1;
+	while (line[++i] == ' ')
+		;
+	if (line[i] == '\n' || line[i] == '\0')
+		return (EXIT_SUCCESS);
 	if (ft_strnstr(line, "NO", len) != NULL)
-		map->no_t = path_extractor(line);
+		ind = 0;
 	else if (ft_strnstr(line, "SO", len) != NULL)
-		map->so_t = path_extractor(line);
+		ind = 1;
 	else if (ft_strnstr(line, "EA", len) != NULL)
-		map->ea_t = path_extractor(line);
+		ind = 2;
 	else if (ft_strnstr(line, "WE", len) != NULL)
-		map->we_t = path_extractor(line);
-	else if (ft_strnstr(line, "C", len) != NULL)
+		ind = 3;
+	if (ind != -1)
+	{
+		if (path_extractor(line, map, ind) != EXIT_SUCCESS)
+			return (4);
+		return (EXIT_SUCCESS);
+	}
+	if (ft_strnstr(line, "C", len) != NULL)
 	{
 		if (rgb_extractor(line, &map->colour_c) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
+			return (RGB_OOR);
+		return (EXIT_SUCCESS);
 	}
 	else if (ft_strnstr(line, "F", len) != NULL)
 	{
 		if (rgb_extractor(line, &map->colour_f) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
+			return (RGB_OOR);
+		return (EXIT_SUCCESS);
 	}
 	else if (ft_strnstr(line, "1", len) != NULL)
 		return (3);
-	return (EXIT_SUCCESS);
+	return (2);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 15:55:34 by olobresh          #+#    #+#             */
-/*   Updated: 2024/07/17 13:59:04 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 14:13:13 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	check_valid_map(t_map *map, int player_x, int player_y)
 
 int	process_rgb_component(char *line, int *i, int *value)
 {
-
 	*value = 0;
 	if (ft_isdigit(line[*i]) == FALSE)
 		return (UNEX_CHAR);

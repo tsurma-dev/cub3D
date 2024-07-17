@@ -6,7 +6,7 @@
 /*   By: tsurma <tsurma@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 12:02:26 by tsurma            #+#    #+#             */
-/*   Updated: 2024/07/17 13:55:57 by tsurma           ###   ########.fr       */
+/*   Updated: 2024/07/17 15:57:23 by tsurma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char				**ft_pointjoin(char **dest, char *src);
 int					check_valid_map(t_map *map, int player_x, int player_y);
 int					valid_map(int *map, int width, int height);
 int					valid_char(char c);
-mlx_texture_t		*path_extractor(char *line);
+int					path_extractor(char *line, t_map *map, int ind);
 int					get_map_dimensions(t_map *map, char **lines);
 int					check_player_surroundings(t_map *map, int player_x,
 						int player_y);
