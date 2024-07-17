@@ -150,6 +150,8 @@ int					check_player_surroundings(t_map *map, int player_x,
 int					process_map_lines(t_map *map, char **lines);
 void				trim_whitespace(char **line);
 int					process_map_line(t_map *map, char *line, int y);
+int					parse_color(t_map *map, char *line, size_t len);
+int					parse_texture(t_map *map, char *line, size_t len);
 int					rgb_extractor(char *line, int *rgb);
 // mlx
 void				window(t_map *map);

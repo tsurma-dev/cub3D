@@ -62,3 +62,41 @@ int	path_extractor(char *line, t_map *map, int ind)
 		map->we_t = mlx_load_png(line);
 	return (EXIT_SUCCESS);
 }
+int parse_color(t_map *map, char *line, size_t len)
+{
+    if (ft_strnstr(line, "C", len) != NULL)
+	{
+        if (rgb_extractor(line, &map->colour_c) == EXIT_FAILURE)
+            return RGB_OOR;
+    }
+	else if (ft_strnstr(line, "F", len) != NULL)
+	{
+        if (rgb_extractor(line, &map->colour_f) == EXIT_FAILURE)
+            return RGB_OOR;
+    }
+	else
+        return EXIT_FAILURE;
+    return EXIT_SUCCESS;
+}
+
+int parse_texture(t_map *map, char *line, size_t len)
+{
+    int ind;
+
+	ind = -1;
+    if (ft_strnstr(line, "NO", len) != NULL)
+        ind = 0;
+    else if (ft_strnstr(line, "SO", len) != NULL)
+        ind = 1;
+    else if (ft_strnstr(line, "EA", len) != NULL)
+        ind = 2;
+    else if (ft_strnstr(line, "WE", len) != NULL)
+        ind = 3;
+    if (ind != -1)
+	{
+        if (path_extractor(line, map, ind) != EXIT_SUCCESS)
+            return 4;
+        return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
+}

@@ -93,47 +93,22 @@ void	parser_exit(char **file, t_map *map, int err_nr, const char *message)
 	exit(err_nr);
 }
 
-int	parse_line(t_map *map, char *line)
+int parse_line(t_map *map, char *line)
 {
-	size_t	len;
-	int		ind;
+    size_t len;
+    int result;
 
-	len = ft_strlen(line);
-	if (len == 0)
-		return (EXIT_SUCCESS);
-	int i = -1;
-	ind = -1;
-	while (line[++i] == ' ')
-		;
-	if (line[i] == '\n' || line[i] == '\0')
-		return (EXIT_SUCCESS);
-	if (ft_strnstr(line, "NO", len) != NULL)
-		ind = 0;
-	else if (ft_strnstr(line, "SO", len) != NULL)
-		ind = 1;
-	else if (ft_strnstr(line, "EA", len) != NULL)
-		ind = 2;
-	else if (ft_strnstr(line, "WE", len) != NULL)
-		ind = 3;
-	if (ind != -1)
-	{
-		if (path_extractor(line, map, ind) != EXIT_SUCCESS)
-			return (4);
-		return (EXIT_SUCCESS);
-	}
-	if (ft_strnstr(line, "C", len) != NULL)
-	{
-		if (rgb_extractor(line, &map->colour_c) == EXIT_FAILURE)
-			return (RGB_OOR);
-		return (EXIT_SUCCESS);
-	}
-	else if (ft_strnstr(line, "F", len) != NULL)
-	{
-		if (rgb_extractor(line, &map->colour_f) == EXIT_FAILURE)
-			return (RGB_OOR);
-		return (EXIT_SUCCESS);
-	}
-	else if (ft_strnstr(line, "1", len) != NULL)
-		return (3);
-	return (2);
+    len = ft_strlen(line);
+    if (len == 0 || line[0] == '\n' || line[0] == '\0')
+        return EXIT_SUCCESS;
+    result = parse_texture(map, line, len);
+    if (result != EXIT_FAILURE)
+        return result;
+    result = parse_color(map, line, len);
+    if (result != EXIT_FAILURE)
+        return result;
+    if (ft_strnstr(line, "1", len) != NULL)
+        return 3;
+    return 2;
 }
+

@@ -33,7 +33,7 @@ int	process_rgb_component(char *line, int *i, int *value)
 	if (ft_isdigit(line[*i]) == FALSE)
 		return (UNEX_CHAR);
 	*value = ft_atoi(&line[*i]);
-	if (*value > 255 || value < 0)
+	if (*value > 255 || *value < 0)
 		return (-RGB_OOR);
 	while (ft_isdigit(line[*i]) == TRUE)
 		++(*i);
